@@ -5,6 +5,14 @@ import WikiLayout from '../../layouts/WikiLayout.astro';
 export async function getStaticPaths() {
   const allEntries = await getCollection('wiki');
 
+  // Byg en map: lowercase filnavn -> slug (til opslag af related-links)
+  const nameToSlug = new Map<string, string>();
+  for (const entry of allEntries) {
+    const slug = entry.id.replace(/\.md$/, '');
+    const name = slug.split('/').pop() || slug;
+    nameToSlug.set(name.toLowerCase(), slug);
+  }
+
   const paths = [];
 
   for (const entry of allEntries) {
@@ -14,10 +22,23 @@ export async function getStaticPaths() {
     const section = parts[0];
     const title = parts[parts.length - 1];
 
+    // Resolv 'related' frontmatter til { label, href } objekter
+    const relatedNames: string[] = (entry.data as any)?.related ?? [];
+    const relatedLinks = relatedNames
+      .map((name: string) => {
+        const resolvedSlug = nameToSlug.get(name.toLowerCase());
+        if (!resolvedSlug) return null;
+        return {
+          label: name,
+          href: '/wiki/' + resolvedSlug.split('/').map(encodeURIComponent).join('/'),
+        };
+      })
+      .filter(Boolean) as { label: string; href: string }[];
+
     paths.push({
       // params.slug must be the raw path — Astro handles URL encoding automatically
       params: { slug },
-      props: { entry, title, section, parts, isSection: false },
+      props: { entry, title, section, parts, isSection: false, relatedLinks },
     });
   }
 
@@ -34,14 +55,14 @@ export async function getStaticPaths() {
   for (const [section, files] of Object.entries(sections)) {
     paths.push({
       params: { slug: section },
-      props: { entry: null, title: section, section, parts: [section], isSection: true, sectionFiles: files },
+      props: { entry: null, title: section, section, parts: [section], isSection: true, sectionFiles: files, relatedLinks: [] },
     });
   }
 
   return paths;
 }
 
-const { entry, title, section, parts, isSection, sectionFiles } = Astro.props;
+const { entry, title, section, parts, isSection, sectionFiles, relatedLinks } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 let Content: any = null;
@@ -112,9 +133,27 @@ if (isSection && sectionFiles) {
   ) : (
     <article data-pagefind-body>
       <h1 class="font-serif text-4xl font-bold text-parchment-800 mb-6" data-pagefind-meta="title">{decodeURIComponent(title)}</h1>
-      <div class="prose prose-lg max-w-none prose-headings:font-serif prose-a:text-parchment-700 prose-a:no-underline hover:prose-a:underline prose-hr:border-parchment-300">
+      <div class="prose prose-lg max-w-none prose-headings:font-serif prose-a:text-parchment-700 prose-a:no-underline hover:prose-a:underline prose-hr:border-parchment-300 [&_.wiki-missing]:text-parchment-400 [&_.wiki-missing]:italic [&_.wiki-missing]:cursor-help">
         <Content />
       </div>
+
+      {relatedLinks && relatedLinks.length > 0 && (
+        <aside class="mt-10 pt-6 border-t border-parchment-200">
+          <h2 class="font-serif text-lg font-semibold text-parchment-700 mb-3">Se også</h2>
+          <ul class="flex flex-wrap gap-2">
+            {relatedLinks.map((link: { label: string; href: string }) => (
+              <li>
+                <a
+                  href={base + link.href}
+                  class="inline-block px-3 py-1 rounded-full bg-parchment-100 text-parchment-700 hover:bg-parchment-200 hover:text-parchment-900 text-sm transition-colors"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )}
     </article>
   )}
 
