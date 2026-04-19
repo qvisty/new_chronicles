@@ -1,0 +1,14 @@
+# Midlertidige filer
+_tmp_test.js
+*.tmp
+*.log
+
+# OS-filer
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor-filer
+.vscode/
+*.swp
+*.swo

@@ -1,0 +1,11 @@
+**Gabriel**
+
+Kharis walked down the empty paths of the garden as bells tolled throughout the city. Further ahead of him in the center of the garden he saw the ancestral tree that signified the founding of Inensari and the Naarthil family. It was then that he was reminded of the weight in his hands as he walked, the sound of bells faded and he was left with his solemn footsteps striking the leaves on the path. 
+
+Eventually there he was and the roots reached up forming into what seemed to be a comfortable bed. He let the weight leave his hands as Morric was placed lightly on the bed of roots. He finally let his gaze wander down and he saw the grave of his mother, her form still as beautiful as it was in life and that always sprouted the most exotic flowers. 
+
+Opposite her the grave was father’s. His form was as stoic and dutiful as ever, and between them was the bed morric now laid with his hands on his chest. Kharis pressed his hand onto the roots and Morric’s form was lowered and covered by roots and then all was still. 
+
+Kharis looked at the three shapes in front of him and a wave of emotions emerged and brought him to his knees. His mother had been dead for well over a century, his father had surrendered himself to the courts to absolve house Naarthil of their crimes and was executed for it. And then there was Morric, who had gone out into the world trying to do right and always protecting the innocent and especially Gabriel when it was needed. They both protected each other and he knew while he wasn't the closest to his brothers they had a bond beyond blood and Gabrielle had lost that now. 
+
+Kharis dug his hands into the dirt as the tears fell. He had placed most of his family into their graves one by one. He was meant to spend centuries with his family, to grow old with his brothers and rely on his parents' guidance. But instead he had to place them in their graves where he would watch their forms stay the same as he grew old. He had spent but a small part of his life with them, and regretted that he wasn't there when they needed him. He gripped the hilt of his Moonblade as he pushed himself to his feet. He still had someone left and he would not abandon him
