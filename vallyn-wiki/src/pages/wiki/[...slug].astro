@@ -2,7 +2,25 @@
 import { getCollection, render } from 'astro:content';
 import WikiLayout from '../../layouts/WikiLayout.astro';
 
+// Format a raw filename into a readable display label
+function formatFileName(rawName: string): string {
+  // Remove .md extension
+  let name = rawName.replace(/\.md$/, '');
+  // Convert "Session -10_ Title" or "Session -10.5_ Title" to "Session 10: Title"
+  name = name.replace(/^Session -(\d+(?:\.\d+)?)_\s*/, 'Session $1: ');
+  // Convert remaining underscores to spaces
+  name = name.replace(/_/g, ' ');
+  return name;
+}
+
 export async function getStaticPaths() {
+  function formatFileNameInner(rawName: string): string {
+    let name = rawName.replace(/\.md$/, '');
+    name = name.replace(/^Session -(\d+(?:\.\d+)?)_\s*/, 'Session $1: ');
+    name = name.replace(/_/g, ' ');
+    return name;
+  }
+
   const allEntries = await getCollection('wiki');
 
   // Byg en map: lowercase filnavn -> slug (til opslag af related-links)
@@ -50,7 +68,7 @@ export async function getStaticPaths() {
       .filter((s) => s !== slug)
       .slice(0, 8)
       .map((s) => ({
-        label: s.split('/').pop() || s,
+        label: formatFileNameInner(s.split('/').pop() || s),
         href: '/wiki/' + s.split('/').map(encodeURIComponent).join('/'),
       }));
 
@@ -104,7 +122,7 @@ if (entry) {
 
 // Build breadcrumb
 const breadcrumb = parts.map((part: string, i: number) => ({
-  label: decodeURIComponent(part),
+  label: formatFileName(decodeURIComponent(part)),
   href: base + '/wiki/' + parts.slice(0, i + 1).map((p: string) => encodeURIComponent(p)).join('/'),
   isLast: i === parts.length - 1,
 }));
@@ -176,7 +194,7 @@ if (isSection && sectionFiles) {
   }
 }
 ---
-<WikiLayout title={decodeURIComponent(title)} section={isSection ? '' : section}>
+<WikiLayout title={formatFileName(title)} section={isSection ? '' : section}>
 
   <!-- Breadcrumb -->
   <nav class="flex items-center gap-1 text-sm text-parchment-500 mb-6 flex-wrap">
@@ -194,7 +212,7 @@ if (isSection && sectionFiles) {
 
   {isSection ? (
     <div>
-      <h1 class="font-serif text-4xl font-bold text-parchment-800 mb-8">{decodeURIComponent(title)}</h1>
+      <h1 class="font-serif text-4xl font-bold text-parchment-800 mb-8">{formatFileName(title)}</h1>
       {Object.entries(groupedFiles).sort(groupSort(section)).map(([group, files]) => (
         <div class="mb-8">
           {group !== '_root' && (
@@ -202,12 +220,13 @@ if (isSection && sectionFiles) {
           )}
           <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
             {(files as string[]).sort(section === 'Stories' ? storySort(meta) : sessionAwareSort).map((fp: string) => {
-              const fileName = fp.split('/').pop() || fp;
+              const rawName = fp.split('/').pop() || fp;
+              const displayName = formatFileName(rawName);
               const href = base + '/wiki/' + fp.split('/').map((p: string) => encodeURIComponent(p)).join('/');
               return (
                 <li>
                   <a href={href} class="block px-3 py-2 rounded-lg hover:bg-parchment-100 text-parchment-700 hover:text-parchment-900 transition-colors text-sm">
-                    {fileName}
+                    {displayName}
                   </a>
                 </li>
               );
@@ -218,7 +237,7 @@ if (isSection && sectionFiles) {
     </div>
   ) : (
     <article data-pagefind-body>
-      <h1 class="font-serif text-4xl font-bold text-parchment-800 mb-6" data-pagefind-meta="title">{decodeURIComponent(title)}</h1>
+      <h1 class="font-serif text-4xl font-bold text-parchment-800 mb-6" data-pagefind-meta="title">{formatFileName(title)}</h1>
       <div class="prose prose-lg max-w-none prose-headings:font-serif prose-a:text-parchment-700 prose-a:no-underline hover:prose-a:underline prose-hr:border-parchment-300 [&_.wiki-missing]:text-parchment-400 [&_.wiki-missing]:italic [&_.wiki-missing]:cursor-help">
         <Content />
       </div>
