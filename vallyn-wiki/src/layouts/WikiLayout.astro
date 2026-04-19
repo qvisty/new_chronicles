@@ -7,7 +7,8 @@ export interface Props {
 
 const { title, description = 'The world of Vallyn - a living wiki', section = '' } = Astro.props;
 const pageTitle = title === 'Vallyn Wiki' ? title : `${title} | Vallyn Wiki`;
-const base = import.meta.env.BASE_URL; // e.g. "/new_chronicles/"
+// Strip any trailing slash so we can always write `${base}/path` safely.
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -16,24 +17,24 @@ const base = import.meta.env.BASE_URL; // e.g. "/new_chronicles/"
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content={description} />
   <title>{pageTitle}</title>
-  <link rel="icon" href={`${base}favicon.ico`} />
+  <link rel="icon" href={`${base}/favicon.ico`} />
   <!-- Pagefind UI -->
-  <link rel="stylesheet" href={`${base}pagefind/pagefind-ui.css`} />
+  <link rel="stylesheet" href={`${base}/pagefind/pagefind-ui.css`} />
 </head>
 <body class="min-h-screen bg-parchment-50 text-ink-900 font-sans">
 
   <!-- Top bar -->
   <header class="sticky top-0 z-50 bg-parchment-900 text-parchment-100 shadow-lg">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
-      <a href={base} class="flex items-center gap-2 font-serif text-xl font-bold text-parchment-100 hover:text-parchment-300 transition-colors whitespace-nowrap">
+      <a href={`${base}/`} class="flex items-center gap-2 font-serif text-xl font-bold text-parchment-100 hover:text-parchment-300 transition-colors whitespace-nowrap">
         &#9768; Vallyn Wiki
       </a>
       <!-- Pagefind search -->
       <div id="search" class="flex-1 max-w-md"></div>
       <nav class="hidden md:flex items-center gap-4 text-sm font-medium">
-        <a href={base} class="hover:text-parchment-300 transition-colors">Home</a>
-        <a href={`${base}wiki/Vallyn`} class="hover:text-parchment-300 transition-colors">World</a>
-        <a href={`${base}wiki/People`} class="hover:text-parchment-300 transition-colors">People</a>
+        <a href={`${base}/`} class="hover:text-parchment-300 transition-colors">Home</a>
+        <a href={`${base}/wiki/Vallyn`} class="hover:text-parchment-300 transition-colors">World</a>
+        <a href={`${base}/wiki/People`} class="hover:text-parchment-300 transition-colors">People</a>
       </nav>
     </div>
   </header>
@@ -42,7 +43,7 @@ const base = import.meta.env.BASE_URL; // e.g. "/new_chronicles/"
   {section && (
     <div class="bg-parchment-100 border-b border-parchment-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 text-sm text-parchment-700">
-        <a href={base} class="hover:underline">Home</a>
+        <a href={`${base}/`} class="hover:underline">Home</a>
         <span class="mx-2">/</span>
         <span>{section}</span>
       </div>
@@ -62,7 +63,7 @@ const base = import.meta.env.BASE_URL; // e.g. "/new_chronicles/"
 
   <script define:vars={{ pagefindBase: base }}>
     const script = document.createElement('script');
-    script.src = pagefindBase + 'pagefind/pagefind-ui.js';
+    script.src = pagefindBase + '/pagefind/pagefind-ui.js';
     script.onload = function() {
       new window.PagefindUI({
         element: '#search',
