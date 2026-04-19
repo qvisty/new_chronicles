@@ -105,7 +105,10 @@ function sessionAwareSort(a: string, b: string): number {
   return getName(a).localeCompare(getName(b));
 }
 
-// Sort comparator for stories: order field first, then date field, then locale compare
+// Sort comparator for stories: order field first, then date field, then full path locale compare
+// Full path compare (rather than filename-only) preserves sub-collection order, e.g.
+//   "Stories/Tales from the New World/A Dream of Peace - Dawn/..." sorts before
+//   "Stories/Tales from the New World/Ashes to Ashes - .../..."
 function storySort(metaMap: Record<string, { date?: string; order?: number }>) {
   return function(a: string, b: string): number {
     const ma = metaMap[a] ?? {};
@@ -118,9 +121,27 @@ function storySort(metaMap: Record<string, { date?: string; order?: number }>) {
     if (ma.date && mb.date) return ma.date.localeCompare(mb.date);
     if (ma.date) return -1;
     if (mb.date) return 1;
-    // fall back to alphabetical
-    const getName = (fp: string) => fp.split('/').pop() || fp;
-    return getName(a).localeCompare(getName(b));
+    // fall back to full-path alphabetical (preserves sub-collection ordering)
+    return a.localeCompare(b);
+  };
+}
+
+// Known group ordering for the Stories section (campaign chronology)
+const STORIES_GROUP_ORDER: Record<string, number> = {
+  'Tales from the Eclipse': 1,
+  'Tales from the New World': 2,
+  'Epilogues': 3,
+  'Vallyn Written Universe': 4,
+};
+
+function groupSort(section: string) {
+  return function([groupA]: [string, unknown], [groupB]: [string, unknown]): number {
+    if (section === 'Stories') {
+      const orderA = STORIES_GROUP_ORDER[groupA] ?? 99;
+      const orderB = STORIES_GROUP_ORDER[groupB] ?? 99;
+      if (orderA !== orderB) return orderA - orderB;
+    }
+    return groupA.localeCompare(groupB);
   };
 }
 
@@ -155,7 +176,7 @@ if (isSection && sectionFiles) {
   {isSection ? (
     <div>
       <h1 class="font-serif text-4xl font-bold text-parchment-800 mb-8">{decodeURIComponent(title)}</h1>
-      {Object.entries(groupedFiles).sort().map(([group, files]) => (
+      {Object.entries(groupedFiles).sort(groupSort(section)).map(([group, files]) => (
         <div class="mb-8">
           {group !== '_root' && (
             <h2 class="font-serif text-xl font-bold text-parchment-700 mb-3 border-b border-parchment-200 pb-2">{group}</h2>
