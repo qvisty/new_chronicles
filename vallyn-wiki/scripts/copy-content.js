@@ -32,9 +32,17 @@ let copied = 0;
 /**
  * Sanitize a path segment so Vite/Rollup can import it safely.
  * Replaces characters that break URL parsing or Windows paths.
+ * For filenames (.md), the stem is sanitized separately so trailing
+ * spaces/underscores before the extension are removed (e.g. "Session #8_ .md").
  */
 function sanitize(name) {
-  return name
+  // Split stem and extension for files (e.g. "foo.md" -> stem="foo", ext=".md")
+  const dotIdx = name.lastIndexOf('.');
+  const hasDot = dotIdx > 0;
+  const stem = hasDot ? name.slice(0, dotIdx) : name;
+  const ext  = hasDot ? name.slice(dotIdx)    : '';
+
+  const cleanStem = stem
     .replace(/#/g, '-')    // # breaks URL fragment parsing
     .replace(/:/g, '-')    // : invalid on Windows paths and URLs
     .replace(/\?/g, '-')   // ? breaks URL query parsing
@@ -46,7 +54,10 @@ function sanitize(name) {
     .replace(/\\/g, '-')   // backslash
     .replace(/\s+_\s+/g, ' - ') // " _ " -> " - " for readability
     .replace(/ {2,}/g, ' ')     // collapse multiple spaces
-    .trim();
+    .trim()
+    .replace(/[_\s]+$/, '');    // strip trailing underscores/spaces from stem
+
+  return cleanStem + ext;
 }
 
 function walk(dir) {
