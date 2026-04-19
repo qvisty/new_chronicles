@@ -43,6 +43,17 @@ export async function getStaticPaths() {
   }
 
   // Section index pages
+  // Build meta map: slug -> { date, order } for date/order-based sorting in section views
+  const entryMeta = new Map<string, { date?: string; order?: number }>();
+  for (const entry of allEntries) {
+    const slug = entry.id.replace(/\.md$/, '');
+    const data = entry.data as any;
+    entryMeta.set(slug, {
+      date: data?.date ?? undefined,
+      order: data?.order ?? undefined,
+    });
+  }
+
   const sections: Record<string, string[]> = {};
   for (const entry of allEntries) {
     const slug = entry.id.replace(/\.md$/, '');
@@ -55,14 +66,15 @@ export async function getStaticPaths() {
   for (const [section, files] of Object.entries(sections)) {
     paths.push({
       params: { slug: section },
-      props: { entry: null, title: section, section, parts: [section], isSection: true, sectionFiles: files, relatedLinks: [] },
+      props: { entry: null, title: section, section, parts: [section], isSection: true, sectionFiles: files, entryMeta: Object.fromEntries(entryMeta), relatedLinks: [] },
     });
   }
 
   return paths;
 }
 
-const { entry, title, section, parts, isSection, sectionFiles, relatedLinks } = Astro.props;
+const { entry, title, section, parts, isSection, sectionFiles, entryMeta, relatedLinks } = Astro.props;
+const meta: Record<string, { date?: string; order?: number }> = entryMeta ?? {};
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 let Content: any = null;
@@ -77,6 +89,40 @@ const breadcrumb = parts.map((part: string, i: number) => ({
   href: base + '/wiki/' + parts.slice(0, i + 1).map((p: string) => encodeURIComponent(p)).join('/'),
   isLast: i === parts.length - 1,
 }));
+
+// Sort comparator: session numbers sort numerically; entries with date/order frontmatter sort by those; fall back to locale compare
+function sessionAwareSort(a: string, b: string): number {
+  const getName = (fp: string) => fp.split('/').pop() || fp;
+  const getSessionNum = (fp: string): number => {
+    const name = getName(fp);
+    // Matches "Session -10_ ...", "Session -10.md", "Session_ -10_", etc.
+    const m = name.match(/[Ss]ession[_ ]*-(\d+(?:\.\d+)?)/);
+    return m ? parseFloat(m[1]) : Infinity;
+  };
+  const na = getSessionNum(a);
+  const nb = getSessionNum(b);
+  if (na !== nb) return na - nb;
+  return getName(a).localeCompare(getName(b));
+}
+
+// Sort comparator for stories: order field first, then date field, then locale compare
+function storySort(metaMap: Record<string, { date?: string; order?: number }>) {
+  return function(a: string, b: string): number {
+    const ma = metaMap[a] ?? {};
+    const mb = metaMap[b] ?? {};
+    // order field (integer) takes priority
+    if (ma.order !== undefined && mb.order !== undefined) return ma.order - mb.order;
+    if (ma.order !== undefined) return -1;
+    if (mb.order !== undefined) return 1;
+    // date field (string ISO date) as secondary
+    if (ma.date && mb.date) return ma.date.localeCompare(mb.date);
+    if (ma.date) return -1;
+    if (mb.date) return 1;
+    // fall back to alphabetical
+    const getName = (fp: string) => fp.split('/').pop() || fp;
+    return getName(a).localeCompare(getName(b));
+  };
+}
 
 // Group section files by sub-folder
 let groupedFiles: Record<string, string[]> = {};
@@ -115,7 +161,7 @@ if (isSection && sectionFiles) {
             <h2 class="font-serif text-xl font-bold text-parchment-700 mb-3 border-b border-parchment-200 pb-2">{group}</h2>
           )}
           <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-            {(files as string[]).sort().map((fp: string) => {
+            {(files as string[]).sort(section === 'Stories' ? storySort(meta) : sessionAwareSort).map((fp: string) => {
               const fileName = fp.split('/').pop() || fp;
               const href = base + '/wiki/' + fp.split('/').map((p: string) => encodeURIComponent(p)).join('/');
               return (
