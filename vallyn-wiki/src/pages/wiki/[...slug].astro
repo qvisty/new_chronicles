@@ -107,6 +107,28 @@ export async function getStaticPaths() {
     });
   }
 
+  // Generate index pages for all intermediate sub-directories (enables breadcrumb links)
+  const dirToFiles = new Map<string, string[]>();
+  for (const entry of allEntries) {
+    const slug = entry.id.replace(/\.md$/, '');
+    const parts = slug.split('/');
+    for (let i = 1; i < parts.length; i++) {
+      const dirPath = parts.slice(0, i).join('/');
+      if (!dirToFiles.has(dirPath)) dirToFiles.set(dirPath, []);
+      dirToFiles.get(dirPath)!.push(slug);
+    }
+  }
+  for (const [dirPath, files] of dirToFiles) {
+    const dirParts = dirPath.split('/');
+    if (dirParts.length === 1) continue; // top-level sections already handled
+    const section = dirParts[0];
+    const title = dirParts[dirParts.length - 1];
+    paths.push({
+      params: { slug: dirPath },
+      props: { entry: null, title, section, parts: dirParts, isSection: true, sectionFiles: files, entryMeta: Object.fromEntries(entryMeta), relatedLinks: [], siblings: [] },
+    });
+  }
+
   return paths;
 }
 
@@ -185,8 +207,9 @@ function groupSort(section: string) {
 // Group section files by sub-folder
 let groupedFiles: Record<string, string[]> = {};
 if (isSection && sectionFiles) {
+  const basePath = parts.join('/') + '/';
   for (const fp of sectionFiles as string[]) {
-    const rest = fp.replace(section + '/', '');
+    const rest = fp.startsWith(basePath) ? fp.slice(basePath.length) : fp.replace(section + '/', '');
     const subParts = rest.split('/');
     const group = subParts.length > 1 ? subParts[0] : '_root';
     if (!groupedFiles[group]) groupedFiles[group] = [];
@@ -216,7 +239,9 @@ if (isSection && sectionFiles) {
       {Object.entries(groupedFiles).sort(groupSort(section)).map(([group, files]) => (
         <div class="mb-8">
           {group !== '_root' && (
-            <h2 class="font-serif text-xl font-bold text-parchment-700 mb-3 border-b border-parchment-200 pb-2">{group}</h2>
+            <h2 class="font-serif text-xl font-bold text-parchment-700 mb-3 border-b border-parchment-200 pb-2">
+              <a href={base + '/wiki/' + [...parts, group].map((p: string) => encodeURIComponent(p)).join('/')} class="hover:underline">{group}</a>
+            </h2>
           )}
           <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
             {(files as string[]).sort(section === 'Stories' ? storySort(meta) : sessionAwareSort).map((fp: string) => {
