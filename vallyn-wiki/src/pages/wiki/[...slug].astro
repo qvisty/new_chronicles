@@ -7,10 +7,19 @@ export async function getStaticPaths() {
 
   // Byg en map: lowercase filnavn -> slug (til opslag af related-links)
   const nameToSlug = new Map<string, string>();
+  // Byg en map: foraeldre-sti -> liste af alle slugs i den mappe
+  const folderToSlugs = new Map<string, string[]>();
+
   for (const entry of allEntries) {
     const slug = entry.id.replace(/\.md$/, '');
-    const name = slug.split('/').pop() || slug;
+    const parts = slug.split('/');
+    const name = parts[parts.length - 1];
     nameToSlug.set(name.toLowerCase(), slug);
+
+    // Gruppeer efter foraeldre-mappe (alt undtagen filnavnet)
+    const parentPath = parts.slice(0, -1).join('/');
+    if (!folderToSlugs.has(parentPath)) folderToSlugs.set(parentPath, []);
+    folderToSlugs.get(parentPath)!.push(slug);
   }
 
   const paths = [];
@@ -35,10 +44,20 @@ export async function getStaticPaths() {
       })
       .filter(Boolean) as { label: string; href: string }[];
 
+    // Automatiske nabosider: andre sider i samme mappe (maks 8)
+    const parentPath = parts.slice(0, -1).join('/');
+    const siblings = (folderToSlugs.get(parentPath) ?? [])
+      .filter((s) => s !== slug)
+      .slice(0, 8)
+      .map((s) => ({
+        label: s.split('/').pop() || s,
+        href: '/wiki/' + s.split('/').map(encodeURIComponent).join('/'),
+      }));
+
     paths.push({
       // params.slug must be the raw path — Astro handles URL encoding automatically
       params: { slug },
-      props: { entry, title, section, parts, isSection: false, relatedLinks },
+      props: { entry, title, section, parts, isSection: false, relatedLinks, siblings },
     });
   }
 
@@ -66,14 +85,14 @@ export async function getStaticPaths() {
   for (const [section, files] of Object.entries(sections)) {
     paths.push({
       params: { slug: section },
-      props: { entry: null, title: section, section, parts: [section], isSection: true, sectionFiles: files, entryMeta: Object.fromEntries(entryMeta), relatedLinks: [] },
+      props: { entry: null, title: section, section, parts: [section], isSection: true, sectionFiles: files, entryMeta: Object.fromEntries(entryMeta), relatedLinks: [], siblings: [] },
     });
   }
 
   return paths;
 }
 
-const { entry, title, section, parts, isSection, sectionFiles, entryMeta, relatedLinks } = Astro.props;
+const { entry, title, section, parts, isSection, sectionFiles, entryMeta, relatedLinks, siblings } = Astro.props;
 const meta: Record<string, { date?: string; order?: number }> = entryMeta ?? {};
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
@@ -213,6 +232,24 @@ if (isSection && sectionFiles) {
                 <a
                   href={base + link.href}
                   class="inline-block px-3 py-1 rounded-full bg-parchment-100 text-parchment-700 hover:bg-parchment-200 hover:text-parchment-900 text-sm transition-colors"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )}
+
+      {siblings && siblings.length > 0 && (
+        <aside class="mt-6 pt-6 border-t border-parchment-200">
+          <h2 class="font-serif text-sm font-semibold text-parchment-500 uppercase tracking-wide mb-3">Andre i samme gruppe</h2>
+          <ul class="flex flex-wrap gap-2">
+            {siblings.map((link: { label: string; href: string }) => (
+              <li>
+                <a
+                  href={base + link.href}
+                  class="inline-block px-3 py-1 rounded-full bg-parchment-50 border border-parchment-200 text-parchment-600 hover:bg-parchment-100 hover:text-parchment-900 text-sm transition-colors"
                 >
                   {link.label}
                 </a>
