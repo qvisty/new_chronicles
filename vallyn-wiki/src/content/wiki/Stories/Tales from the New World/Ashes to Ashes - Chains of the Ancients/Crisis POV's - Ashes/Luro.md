@@ -1,0 +1,7 @@
+**Luro**
+
+Evander sat in his chair, his gaze sweeping over the untamed wilds stretched out before him. The wilderness, teeming with creatures, was a sight he never tired of. His inherent love for the hunt, a trait that ran deep within his blood, was satiated by these vast hunting grounds right at his doorstep. He savored the last drops of his rich, crimson wine and set the goblet aside. A hunt was due, but other pressing matters demanded his attention.
+
+The tranquility of his domain was being disturbed by the other noble families in the area. Their newfound religious fervor was causing unrest among the common folks and the dissenting families. Evander scoffed at the thought of reasoning with such fanatics. Zealots, he knew, understood just one language: violence. And he was prepared to engage them in their own dialect. His family's way of life was under threat, and he would not let it crumble without a fight.
+
+Stepping onto the balcony overlooking the front courtyard, Evander's gaze fell upon his assembled forces. Their readiness and discipline were a sight to behold. Among them, he saw the familiar faces of his own kin, their eyes reflecting the same determination that coursed through his veins. Together, they would remind the other families of their place. The searing of silver would be their lesson.

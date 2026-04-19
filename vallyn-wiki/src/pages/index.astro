@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import WikiLayout from '../layouts/WikiLayout.astro';
+
+const allEntries = await getCollection('wiki');
+
+// Build section stats
+const sections: Record<string, number> = {};
+for (const entry of allEntries) {
+  const section = entry.id.split('/')[0];
+  sections[section] = (sections[section] || 0) + 1;
+}
+
+const sectionList = Object.entries(sections).sort((a, b) => b[1] - a[1]);
+const totalFiles = allEntries.length;
+
+const sectionIcons: Record<string, string> = {
+  'Chains of the Ancients': '⛓️',
+  'Dream of Dawn': '🌅',
+  'People': '👥',
+  'Recaps': '📜',
+  'Stories': '📖',
+  'Vallyn': '🗺️',
+};
+---
+<WikiLayout title="Vallyn Wiki" description="The living wiki of the world of Vallyn — characters, lore, stories and more.">
+
+  <div class="text-center py-12 mb-10">
+    <h1 class="font-serif text-5xl font-bold text-parchment-800 mb-4">The World of Vallyn</h1>
+    <p class="text-xl text-parchment-600 max-w-2xl mx-auto">
+      A living wiki with {totalFiles} pages covering the lore, characters, stories and chronicles of New Chronicles.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+    {sectionList.map(([section, count]) => {
+      const icon = sectionIcons[section] || '📄';
+      const slug = encodeURIComponent(section);
+      return (
+        <a
+          href={`/wiki/${slug}`}
+          class="group block bg-white rounded-2xl border border-parchment-200 p-6 hover:border-parchment-400 hover:shadow-md transition-all"
+        >
+          <div class="text-3xl mb-3">{icon}</div>
+          <h2 class="font-serif text-xl font-bold text-parchment-800 group-hover:text-parchment-600 transition-colors mb-1">{section}</h2>
+          <p class="text-sm text-parchment-500">{count} {count === 1 ? 'page' : 'pages'}</p>
+        </a>
+      );
+    })}
+  </div>
+
+  <div class="bg-white rounded-2xl border border-parchment-200 p-8">
+    <h2 class="font-serif text-2xl font-bold text-parchment-800 mb-4">About this Wiki</h2>
+    <p class="text-parchment-700 leading-relaxed">
+      This wiki collects the lore, characters, session recaps, backstories and stories from the New Chronicles tabletop RPG campaign set in the world of Vallyn.
+      Use the search bar above to find anything by keyword, or browse the sections above.
+    </p>
+  </div>
+
+</WikiLayout>

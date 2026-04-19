@@ -1,0 +1,120 @@
+---
+import { getCollection, render } from 'astro:content';
+import WikiLayout from '../../layouts/WikiLayout.astro';
+
+export async function getStaticPaths() {
+  const allEntries = await getCollection('wiki');
+
+  const paths = [];
+
+  for (const entry of allEntries) {
+    // entry.id is the path within content/wiki/, e.g. "Chains of the Ancients/Stories/foo.md"
+    const slug = entry.id.replace(/\.md$/, '');
+    const parts = slug.split('/');
+    const section = parts[0];
+    const title = parts[parts.length - 1];
+
+    paths.push({
+      // params.slug must be the raw path — Astro handles URL encoding automatically
+      params: { slug },
+      props: { entry, title, section, parts, isSection: false },
+    });
+  }
+
+  // Section index pages
+  const sections: Record<string, string[]> = {};
+  for (const entry of allEntries) {
+    const slug = entry.id.replace(/\.md$/, '');
+    const parts = slug.split('/');
+    const section = parts[0];
+    if (!sections[section]) sections[section] = [];
+    sections[section].push(slug);
+  }
+
+  for (const [section, files] of Object.entries(sections)) {
+    paths.push({
+      params: { slug: section },
+      props: { entry: null, title: section, section, parts: [section], isSection: true, sectionFiles: files },
+    });
+  }
+
+  return paths;
+}
+
+const { entry, title, section, parts, isSection, sectionFiles } = Astro.props;
+
+let Content: any = null;
+if (entry) {
+  const rendered = await render(entry);
+  Content = rendered.Content;
+}
+
+// Build breadcrumb
+const breadcrumb = parts.map((part: string, i: number) => ({
+  label: decodeURIComponent(part),
+  href: '/wiki/' + parts.slice(0, i + 1).map((p: string) => encodeURIComponent(p)).join('/'),
+  isLast: i === parts.length - 1,
+}));
+
+// Group section files by sub-folder
+let groupedFiles: Record<string, string[]> = {};
+if (isSection && sectionFiles) {
+  for (const fp of sectionFiles as string[]) {
+    const rest = fp.replace(section + '/', '');
+    const subParts = rest.split('/');
+    const group = subParts.length > 1 ? subParts[0] : '_root';
+    if (!groupedFiles[group]) groupedFiles[group] = [];
+    groupedFiles[group].push(fp);
+  }
+}
+---
+<WikiLayout title={decodeURIComponent(title)} section={isSection ? '' : section}>
+
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-1 text-sm text-parchment-500 mb-6 flex-wrap">
+    <a href="/" class="hover:text-parchment-700 hover:underline">Home</a>
+    {breadcrumb.map((crumb: {label: string; href: string; isLast: boolean}) => (
+      <>
+        <span class="mx-1 text-parchment-300">/</span>
+        {crumb.isLast
+          ? <span class="text-parchment-800 font-medium">{crumb.label}</span>
+          : <a href={crumb.href} class="hover:text-parchment-700 hover:underline">{crumb.label}</a>
+        }
+      </>
+    ))}
+  </nav>
+
+  {isSection ? (
+    <div>
+      <h1 class="font-serif text-4xl font-bold text-parchment-800 mb-8">{decodeURIComponent(title)}</h1>
+      {Object.entries(groupedFiles).sort().map(([group, files]) => (
+        <div class="mb-8">
+          {group !== '_root' && (
+            <h2 class="font-serif text-xl font-bold text-parchment-700 mb-3 border-b border-parchment-200 pb-2">{group}</h2>
+          )}
+          <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            {(files as string[]).sort().map((fp: string) => {
+              const fileName = fp.split('/').pop() || fp;
+              const href = '/wiki/' + fp.split('/').map((p: string) => encodeURIComponent(p)).join('/');
+              return (
+                <li>
+                  <a href={href} class="block px-3 py-2 rounded-lg hover:bg-parchment-100 text-parchment-700 hover:text-parchment-900 transition-colors text-sm">
+                    {fileName}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <article data-pagefind-body>
+      <h1 class="font-serif text-4xl font-bold text-parchment-800 mb-6" data-pagefind-meta="title">{decodeURIComponent(title)}</h1>
+      <div class="prose prose-lg max-w-none prose-headings:font-serif prose-a:text-parchment-700 prose-a:no-underline hover:prose-a:underline prose-hr:border-parchment-300">
+        <Content />
+      </div>
+    </article>
+  )}
+
+</WikiLayout>
