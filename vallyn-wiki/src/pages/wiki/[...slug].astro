@@ -204,16 +204,18 @@ function groupSort(section: string) {
   };
 }
 
-// Group section files by sub-folder
-let groupedFiles: Record<string, string[]> = {};
+// Group section files by sub-folder (2-niveau: group -> subGroup -> files)
+let groupedFiles: Record<string, Record<string, string[]>> = {};
 if (isSection && sectionFiles) {
   const basePath = parts.join('/') + '/';
   for (const fp of sectionFiles as string[]) {
     const rest = fp.startsWith(basePath) ? fp.slice(basePath.length) : fp.replace(section + '/', '');
     const subParts = rest.split('/');
     const group = subParts.length > 1 ? subParts[0] : '_root';
-    if (!groupedFiles[group]) groupedFiles[group] = [];
-    groupedFiles[group].push(fp);
+    const subGroup = subParts.length > 2 ? subParts[1] : '_root';
+    if (!groupedFiles[group]) groupedFiles[group] = {};
+    if (!groupedFiles[group][subGroup]) groupedFiles[group][subGroup] = [];
+    groupedFiles[group][subGroup].push(fp);
   }
 }
 ---
@@ -236,27 +238,36 @@ if (isSection && sectionFiles) {
   {isSection ? (
     <div>
       <h1 class="font-serif text-4xl font-bold text-parchment-800 mb-8">{formatFileName(title)}</h1>
-      {Object.entries(groupedFiles).sort(groupSort(section)).map(([group, files]) => (
+      {Object.entries(groupedFiles).sort(groupSort(section)).map(([group, subGroups]) => (
         <div class="mb-8">
           {group !== '_root' && (
             <h2 class="font-serif text-xl font-bold text-parchment-700 mb-3 border-b border-parchment-200 pb-2">
               <a href={base + '/wiki/' + [...parts, group].map((p: string) => encodeURIComponent(p)).join('/')} class="hover:underline">{group}</a>
             </h2>
           )}
-          <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-            {(files as string[]).sort(section === 'Stories' ? storySort(meta) : sessionAwareSort).map((fp: string) => {
-              const rawName = fp.split('/').pop() || fp;
-              const displayName = formatFileName(rawName);
-              const href = base + '/wiki/' + fp.split('/').map((p: string) => encodeURIComponent(p)).join('/');
-              return (
-                <li>
-                  <a href={href} class="block px-3 py-2 rounded-lg hover:bg-parchment-100 text-parchment-700 hover:text-parchment-900 transition-colors text-sm">
-                    {displayName}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
+          {Object.entries(subGroups as any).sort().map(([subGroup, files]: [string, any]) => (
+            <div class={subGroup !== '_root' ? 'mb-6 ml-2' : 'mb-4'}>
+              {subGroup !== '_root' && (
+                <h3 class="font-serif text-base font-semibold text-parchment-600 mb-2 border-b border-parchment-100 pb-1">
+                  <a href={base + '/wiki/' + [...parts, group, subGroup].map((p: string) => encodeURIComponent(p)).join('/')} class="hover:underline">{subGroup}</a>
+                </h3>
+              )}
+              <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                {(files as string[]).sort(section === 'Stories' ? storySort(meta) : sessionAwareSort).map((fp: string) => {
+                  const rawName = fp.split('/').pop() || fp;
+                  const displayName = formatFileName(rawName);
+                  const href = base + '/wiki/' + fp.split('/').map((p: string) => encodeURIComponent(p)).join('/');
+                  return (
+                    <li>
+                      <a href={href} class="block px-3 py-2 rounded-lg hover:bg-parchment-100 text-parchment-700 hover:text-parchment-900 transition-colors text-sm">
+                        {displayName}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
         </div>
       ))}
     </div>

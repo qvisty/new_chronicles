@@ -4,17 +4,50 @@ import WikiLayout from '../layouts/WikiLayout.astro';
 
 const allEntries = await getCollection('wiki');
 
-// Build section stats
-const sections: Record<string, number> = {};
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Vallyn-verdensider (fremhaevet oeverst)
+const vallynEntries = allEntries
+  .filter(e => e.id.startsWith('Vallyn/'))
+  .map(e => ({
+    name: e.id.replace(/^Vallyn\//, '').replace(/\.md$/, ''),
+    href: `${base}/wiki/${e.id.replace(/\.md$/, '').split('/').map(encodeURIComponent).join('/')}`,
+  }));
+
+const vallynIcons: Record<string, string> = {
+  'A Summarized History': '📜',
+  'Gods and Other Powerful Beings': '⚡',
+  'State of Vallyn, 988 A.D.': '🗺️',
+  'The Feywild': '🌿',
+};
+
+// Byg undersektioner og filtal per top-sektion
+const sectionStats: Record<string, { count: number; subSections: string[] }> = {};
+const sectionSubSectionSlugs: Record<string, Record<string, string>> = {};
+
 for (const entry of allEntries) {
-  const section = entry.id.split('/')[0];
-  sections[section] = (sections[section] || 0) + 1;
+  const parts = entry.id.split('/');
+  const section = parts[0];
+  if (section === 'Vallyn') continue; // Vallyn haandteres separat
+
+  if (!sectionStats[section]) {
+    sectionStats[section] = { count: 0, subSections: [] };
+    sectionSubSectionSlugs[section] = {};
+  }
+  sectionStats[section].count++;
+
+  if (parts.length >= 2) {
+    const sub = parts[1].replace(/\.md$/, '');
+    if (!sectionStats[section].subSections.includes(sub)) {
+      sectionStats[section].subSections.push(sub);
+      sectionSubSectionSlugs[section][sub] =
+        `${base}/wiki/${encodeURIComponent(section)}/${encodeURIComponent(sub)}`;
+    }
+  }
 }
 
-const sectionList = Object.entries(sections).sort((a, b) => b[1] - a[1]);
-const totalFiles = allEntries.length;
-
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+// Sorter sektioner: flest filer foerst
+const sectionList = Object.entries(sectionStats).sort((a, b) => b[1].count - a[1].count);
 
 const sectionIcons: Record<string, string> = {
   'Chains of the Ancients': '⛓️',
@@ -22,40 +55,86 @@ const sectionIcons: Record<string, string> = {
   'People': '👥',
   'Recaps': '📜',
   'Stories': '📖',
-  'Vallyn': '🗺️',
 };
 ---
 <WikiLayout title="Vallyn Wiki" description="The living wiki of the world of Vallyn — characters, lore, stories and more.">
 
-  <div class="text-center py-12 mb-10">
-    <h1 class="font-serif text-5xl font-bold text-parchment-800 mb-4">The World of Vallyn</h1>
-    <p class="text-xl text-parchment-600 max-w-2xl mx-auto">
-      A living wiki with {totalFiles} pages covering the lore, characters, stories and chronicles of New Chronicles.
-    </p>
+  <!-- Vallyn Verdensindhold (featured) -->
+  <div class="mb-12">
+    <div class="text-center py-10 mb-6">
+      <h1 class="font-serif text-5xl font-bold text-parchment-800 mb-3">The World of Vallyn</h1>
+      <p class="text-lg text-parchment-600 max-w-2xl mx-auto">
+        A living wiki covering the lore, characters, stories and chronicles of New Chronicles.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+      {vallynEntries.map(({ name, href }) => (
+        <a
+          href={href}
+          class="group block bg-amber-50 border border-amber-200 rounded-xl p-5 hover:border-amber-400 hover:shadow-md transition-all"
+        >
+          <div class="text-2xl mb-2">{vallynIcons[name] ?? '🗺️'}</div>
+          <h2 class="font-serif text-base font-bold text-parchment-800 group-hover:text-parchment-600 transition-colors leading-snug">{name}</h2>
+        </a>
+      ))}
+    </div>
+    <div class="text-center">
+      <a href={`${base}/wiki/Vallyn`} class="text-sm text-parchment-500 hover:text-parchment-700 hover:underline">
+        Se alt om verdenen Vallyn →
+      </a>
+    </div>
   </div>
 
+  <!-- Sektioner med undersektioner -->
+  <h2 class="font-serif text-2xl font-bold text-parchment-800 mb-5">Kampagner &amp; Indhold</h2>
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-    {sectionList.map(([section, count]) => {
-      const icon = sectionIcons[section] || '📄';
-      const slug = encodeURIComponent(section);
+    {sectionList.map(([section, { count, subSections }]) => {
+      const icon = sectionIcons[section] ?? '📄';
+      const sectionHref = `${base}/wiki/${encodeURIComponent(section)}`;
+      const subLinks = sectionSubSectionSlugs[section] ?? {};
+      // Vis maks 6 undersektioner
+      const visibleSubs = subSections.slice(0, 6);
       return (
-        <a
-          href={`${base}/wiki/${slug}`}
-          class="group block bg-white rounded-2xl border border-parchment-200 p-6 hover:border-parchment-400 hover:shadow-md transition-all"
-        >
-          <div class="text-3xl mb-3">{icon}</div>
-          <h2 class="font-serif text-xl font-bold text-parchment-800 group-hover:text-parchment-600 transition-colors mb-1">{section}</h2>
-          <p class="text-sm text-parchment-500">{count} {count === 1 ? 'page' : 'pages'}</p>
-        </a>
+        <div class="group block bg-white rounded-2xl border border-parchment-200 p-6 hover:border-parchment-300 hover:shadow-sm transition-all">
+          <a href={sectionHref} class="flex items-start gap-3 mb-3">
+            <span class="text-3xl">{icon}</span>
+            <div>
+              <h2 class="font-serif text-xl font-bold text-parchment-800 group-hover:text-parchment-600 transition-colors">{section}</h2>
+              <p class="text-xs text-parchment-400 mt-0.5">{count} {count === 1 ? 'side' : 'sider'}</p>
+            </div>
+          </a>
+          {visibleSubs.length > 0 && (
+            <ul class="space-y-1 border-t border-parchment-100 pt-3">
+              {visibleSubs.map(sub => (
+                <li>
+                  <a
+                    href={subLinks[sub] ?? sectionHref}
+                    class="block text-sm text-parchment-600 hover:text-parchment-900 hover:underline px-1 py-0.5 rounded transition-colors truncate"
+                  >
+                    {sub}
+                  </a>
+                </li>
+              ))}
+              {subSections.length > 6 && (
+                <li>
+                  <a href={sectionHref} class="block text-xs text-parchment-400 hover:text-parchment-600 px-1 py-0.5 italic">
+                    + {subSections.length - 6} mere…
+                  </a>
+                </li>
+              )}
+            </ul>
+          )}
+        </div>
       );
     })}
   </div>
 
   <div class="bg-white rounded-2xl border border-parchment-200 p-8">
-    <h2 class="font-serif text-2xl font-bold text-parchment-800 mb-4">About this Wiki</h2>
+    <h2 class="font-serif text-2xl font-bold text-parchment-800 mb-4">Om denne wiki</h2>
     <p class="text-parchment-700 leading-relaxed">
-      This wiki collects the lore, characters, session recaps, backstories and stories from the New Chronicles tabletop RPG campaign set in the world of Vallyn.
-      Use the search bar above to find anything by keyword, or browse the sections above.
+      Denne wiki samler lore, karakterer, sessionsrekaps, baghistorier og stories fra New Chronicles tabletop-RPG-kampagnen i verdenen Vallyn.
+      Brug soegningen ovenfor til at finde noget via sogeord, eller gennemse sektionerne ovenfor.
     </p>
   </div>
 
