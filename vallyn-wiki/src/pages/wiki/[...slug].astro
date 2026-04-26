@@ -196,7 +196,7 @@ function groupSort(section: string) {
 let groupedFiles: Record<string, Record<string, string[]>> = {};
 if (isSection && sectionFiles) {
   const basePath = parts.join('/') + '/';
-  const isRecapSection = parts[0] === 'Recaps';
+  const isRecapSection = parts[0] === 'Recaps' && parts.length > 1;
   for (const fp of sectionFiles as string[]) {
     const rest = fp.startsWith(basePath) ? fp.slice(basePath.length) : fp.replace(section + '/', '');
     const subParts = rest.split('/');
