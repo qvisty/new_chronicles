@@ -3,11 +3,16 @@ export interface Props {
   title: string;
   description?: string;
   section?: string;
+  campaignTheme?: 'chains' | 'dawn' | 'hub';
 }
 
-const { title, description = 'The world of Vallyn - a living wiki', section = '' } = Astro.props;
+const {
+  title,
+  description = 'The world of Vallyn - a living wiki',
+  section = '',
+  campaignTheme = 'hub',
+} = Astro.props;
 const pageTitle = title === 'Vallyn Wiki' ? title : `${title} | Vallyn Wiki`;
-// Strip any trailing slash so we can always write `${base}/path` safely.
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <!DOCTYPE html>
@@ -18,46 +23,44 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <meta name="description" content={description} />
   <title>{pageTitle}</title>
   <link rel="icon" href={`${base}/favicon.ico`} />
-  <!-- Pagefind UI -->
   <link rel="stylesheet" href={`${base}/pagefind/pagefind-ui.css`} />
 </head>
-<body class="min-h-screen bg-parchment-50 text-ink-900 font-sans">
+<body class={`min-h-screen bg-chronicle-bg text-chronicle-text font-sans theme-${campaignTheme}`}>
 
-  <!-- Top bar -->
-  <header class="sticky top-0 z-50 bg-parchment-900 text-parchment-100 shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
-      <a href={`${base}/`} class="flex items-center gap-2 font-serif text-xl font-bold text-parchment-100 hover:text-parchment-300 transition-colors whitespace-nowrap">
-        &#9768; Vallyn Wiki
+  <!-- Navigation -->
+  <header class="sticky top-0 z-50 border-b border-chronicle-border backdrop-blur-md bg-chronicle-bg/95">
+    <div class="max-w-[1100px] mx-auto px-6 h-14 flex items-center justify-between gap-6">
+      <a href={`${base}/`} class="flex items-center gap-2 font-serif text-lg text-accent-light hover:opacity-80 transition-opacity whitespace-nowrap">
+        The Chronicles
       </a>
-      <!-- Pagefind search -->
       <div id="search" class="flex-1 max-w-md"></div>
-      <nav class="hidden md:flex items-center gap-4 text-sm font-medium">
-        <a href={`${base}/`} class="hover:text-parchment-300 transition-colors">Home</a>
-        <a href={`${base}/wiki/Vallyn`} class="hover:text-parchment-300 transition-colors">World</a>
-        <a href={`${base}/wiki/People`} class="hover:text-parchment-300 transition-colors">People</a>
+      <nav class="hidden md:flex items-center gap-6 text-sm">
+        <a href={`${base}/`} class="text-chronicle-muted hover:text-chronicle-text transition-colors">Home</a>
+        <a href={`${base}/wiki/Vallyn`} class="text-chronicle-muted hover:text-chronicle-text transition-colors">World</a>
+        <a href={`${base}/wiki/People`} class="text-chronicle-muted hover:text-chronicle-text transition-colors">People</a>
       </nav>
     </div>
   </header>
 
-  <!-- Breadcrumb / section label -->
+  <!-- Breadcrumb -->
   {section && (
-    <div class="bg-parchment-100 border-b border-parchment-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 text-sm text-parchment-700">
-        <a href={`${base}/`} class="hover:underline">Home</a>
-        <span class="mx-2">/</span>
-        <span>{section}</span>
+    <div class="border-b border-chronicle-border">
+      <div class="max-w-[1100px] mx-auto px-6 py-2 text-sm text-chronicle-muted">
+        <a href={`${base}/`} class="hover:text-chronicle-text transition-colors">Home</a>
+        <span class="mx-2 text-chronicle-dim">/</span>
+        <span class="text-chronicle-muted">{section}</span>
       </div>
     </div>
   )}
 
   <!-- Main content -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <main class="max-w-[1100px] mx-auto px-6 py-10">
     <slot />
   </main>
 
-  <footer class="mt-16 border-t border-parchment-200 bg-parchment-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-sm text-parchment-600 text-center">
-      Vallyn Wiki &mdash; The world of New Chronicles
+  <footer class="border-t border-chronicle-border mt-16">
+    <div class="max-w-[1100px] mx-auto px-6 py-8 text-sm text-chronicle-muted text-center">
+      The Chronicles &mdash; a collection of tabletop stories set in the world of Vallyn
     </div>
   </footer>
 
@@ -80,23 +83,75 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <style is:global>
   html { scroll-behavior: smooth; }
-  /* Pagefind overrides to match parchment theme */
+
+  /* Pagefind overrides for dark theme */
   .pagefind-ui {
     --pagefind-ui-scale: 0.8;
-    --pagefind-ui-primary: #85511a;
-    --pagefind-ui-text: #1c1a14;
-    --pagefind-ui-background: #fdf8f0;
-    --pagefind-ui-border: #e9c27e;
-    --pagefind-ui-tag: #f9eedb;
+    --pagefind-ui-primary: #8a90b8;
+    --pagefind-ui-text: #ddd4bb;
+    --pagefind-ui-background: #14141e;
+    --pagefind-ui-border: #2a2a38;
+    --pagefind-ui-tag: #1c1c28;
   }
-  /* Prose styling for wiki content */
-  .wiki-content {
-    @apply prose prose-stone max-w-none;
+
+  /* Campaign theme accent overrides */
+  .theme-chains {
+    --accent-color: #9b2626;
+    --accent-light: #c43c3c;
   }
-  .wiki-content h1, .wiki-content h2, .wiki-content h3 {
-    @apply font-serif;
+  .theme-dawn {
+    --accent-color: #c9a227;
+    --accent-light: #e8bc30;
   }
-  .wiki-content a {
-    @apply text-parchment-700 underline hover:text-parchment-500;
+  .theme-hub {
+    --accent-color: #6a7090;
+    --accent-light: #8a90b8;
+  }
+
+  /* Prose styling for wiki content (dark theme) */
+  .wiki-prose {
+    @apply prose prose-invert max-w-none;
+    --tw-prose-body: #ddd4bb;
+    --tw-prose-headings: #ddd4bb;
+    --tw-prose-links: #8a90b8;
+    --tw-prose-bold: #ddd4bb;
+    --tw-prose-counters: #8a8070;
+    --tw-prose-bullets: #8a8070;
+    --tw-prose-hr: #2a2a38;
+    --tw-prose-quotes: #8a8070;
+    --tw-prose-quote-borders: #2a2a38;
+    --tw-prose-code: #ddd4bb;
+    --tw-prose-pre-code: #ddd4bb;
+    --tw-prose-pre-bg: #14141e;
+    --tw-prose-th-borders: #2a2a38;
+    --tw-prose-td-borders: #2a2a38;
+  }
+  .wiki-prose h1, .wiki-prose h2, .wiki-prose h3, .wiki-prose h4 {
+    @apply font-serif font-normal;
+    letter-spacing: 0.01em;
+  }
+  .wiki-prose a {
+    color: var(--accent-light, #8a90b8);
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .wiki-prose a:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+  }
+  .wiki-prose blockquote {
+    border-left-color: var(--accent-color, #6a7090);
+    background: rgba(106, 112, 144, 0.08);
+    border-radius: 0 6px 6px 0;
+    padding: 1rem 1.5rem;
+    font-family: Georgia, serif;
+    font-style: italic;
+  }
+
+  /* Missing wiki link styling */
+  .wiki-missing {
+    color: #8a8070 !important;
+    font-style: italic;
+    cursor: help;
   }
 </style>

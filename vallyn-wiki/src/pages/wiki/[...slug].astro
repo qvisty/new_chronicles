@@ -4,11 +4,8 @@ import WikiLayout from '../../layouts/WikiLayout.astro';
 
 // Format a raw filename into a readable display label
 function formatFileName(rawName: string): string {
-  // Remove .md extension
   let name = rawName.replace(/\.md$/, '');
-  // Convert "Session -10_ Title" or "Session -10.5_ Title" to "Session 10: Title"
   name = name.replace(/^Session -(\d+(?:\.\d+)?)_\s*/, 'Session $1: ');
-  // Convert remaining underscores to spaces
   name = name.replace(/_/g, ' ');
   return name;
 }
@@ -23,9 +20,7 @@ export async function getStaticPaths() {
 
   const allEntries = await getCollection('wiki');
 
-  // Byg en map: lowercase filnavn -> slug (til opslag af related-links)
   const nameToSlug = new Map<string, string>();
-  // Byg en map: foraeldre-sti -> liste af alle slugs i den mappe
   const folderToSlugs = new Map<string, string[]>();
 
   for (const entry of allEntries) {
@@ -34,7 +29,6 @@ export async function getStaticPaths() {
     const name = parts[parts.length - 1];
     nameToSlug.set(name.toLowerCase(), slug);
 
-    // Gruppeer efter foraeldre-mappe (alt undtagen filnavnet)
     const parentPath = parts.slice(0, -1).join('/');
     if (!folderToSlugs.has(parentPath)) folderToSlugs.set(parentPath, []);
     folderToSlugs.get(parentPath)!.push(slug);
@@ -43,13 +37,11 @@ export async function getStaticPaths() {
   const paths = [];
 
   for (const entry of allEntries) {
-    // entry.id is the path within content/wiki/, e.g. "Chains of the Ancients/Stories/foo.md"
     const slug = entry.id.replace(/\.md$/, '');
     const parts = slug.split('/');
     const section = parts[0];
     const title = parts[parts.length - 1];
 
-    // Resolv 'related' frontmatter til { label, href } objekter
     const relatedNames: string[] = (entry.data as any)?.related ?? [];
     const relatedLinks = relatedNames
       .map((name: string) => {
@@ -62,7 +54,6 @@ export async function getStaticPaths() {
       })
       .filter(Boolean) as { label: string; href: string }[];
 
-    // Automatiske nabosider: andre sider i samme mappe (maks 8)
     const parentPath = parts.slice(0, -1).join('/');
     const siblings = (folderToSlugs.get(parentPath) ?? [])
       .filter((s) => s !== slug)
@@ -73,14 +64,12 @@ export async function getStaticPaths() {
       }));
 
     paths.push({
-      // params.slug must be the raw path — Astro handles URL encoding automatically
       params: { slug },
       props: { entry, title, section, parts, isSection: false, relatedLinks, siblings },
     });
   }
 
   // Section index pages
-  // Build meta map: slug -> { date, order } for date/order-based sorting in section views
   const entryMeta = new Map<string, { date?: string; order?: number }>();
   for (const entry of allEntries) {
     const slug = entry.id.replace(/\.md$/, '');
@@ -107,7 +96,7 @@ export async function getStaticPaths() {
     });
   }
 
-  // Generate index pages for all intermediate sub-directories (enables breadcrumb links)
+  // Generate index pages for all intermediate sub-directories
   const dirToFiles = new Map<string, string[]>();
   for (const entry of allEntries) {
     const slug = entry.id.replace(/\.md$/, '');
@@ -120,7 +109,7 @@ export async function getStaticPaths() {
   }
   for (const [dirPath, files] of dirToFiles) {
     const dirParts = dirPath.split('/');
-    if (dirParts.length === 1) continue; // top-level sections already handled
+    if (dirParts.length === 1) continue;
     const section = dirParts[0];
     const title = dirParts[dirParts.length - 1];
     paths.push({
@@ -136,6 +125,14 @@ const { entry, title, section, parts, isSection, sectionFiles, entryMeta, relate
 const meta: Record<string, { date?: string; order?: number }> = entryMeta ?? {};
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
+// Determine campaign theme from section
+function getCampaignTheme(section: string): 'chains' | 'dawn' | 'hub' {
+  if (section === 'Chains of the Ancients') return 'chains';
+  if (section === 'Dream of Dawn') return 'dawn';
+  return 'hub';
+}
+const campaignTheme = getCampaignTheme(section);
+
 let Content: any = null;
 if (entry) {
   const rendered = await render(entry);
@@ -149,12 +146,11 @@ const breadcrumb = parts.map((part: string, i: number) => ({
   isLast: i === parts.length - 1,
 }));
 
-// Sort comparator: session numbers sort numerically; entries with date/order frontmatter sort by those; fall back to locale compare
+// Sort comparators
 function sessionAwareSort(a: string, b: string): number {
   const getName = (fp: string) => fp.split('/').pop() || fp;
   const getSessionNum = (fp: string): number => {
     const name = getName(fp);
-    // Matches "Session -10_ ...", "Session -10.md", "Session_ -10_", etc.
     const m = name.match(/[Ss]ession[_ ]*-(\d+(?:\.\d+)?)/);
     return m ? parseFloat(m[1]) : Infinity;
   };
@@ -164,28 +160,20 @@ function sessionAwareSort(a: string, b: string): number {
   return getName(a).localeCompare(getName(b));
 }
 
-// Sort comparator for stories: order field first, then date field, then full path locale compare
-// Full path compare (rather than filename-only) preserves sub-collection order, e.g.
-//   "Stories/Tales from the New World/A Dream of Peace - Dawn/..." sorts before
-//   "Stories/Tales from the New World/Ashes to Ashes - .../..."
 function storySort(metaMap: Record<string, { date?: string; order?: number }>) {
   return function(a: string, b: string): number {
     const ma = metaMap[a] ?? {};
     const mb = metaMap[b] ?? {};
-    // order field (integer) takes priority
     if (ma.order !== undefined && mb.order !== undefined) return ma.order - mb.order;
     if (ma.order !== undefined) return -1;
     if (mb.order !== undefined) return 1;
-    // date field (string ISO date) as secondary
     if (ma.date && mb.date) return ma.date.localeCompare(mb.date);
     if (ma.date) return -1;
     if (mb.date) return 1;
-    // fall back to full-path alphabetical (preserves sub-collection ordering)
     return a.localeCompare(b);
   };
 }
 
-// Known group ordering for the Stories section (campaign chronology)
 const STORIES_GROUP_ORDER: Record<string, number> = {
   'Tales from the Eclipse': 1,
   'Tales from the New World': 2,
@@ -204,7 +192,7 @@ function groupSort(section: string) {
   };
 }
 
-// Group section files by sub-folder (2-niveau: group -> subGroup -> files)
+// Group section files
 let groupedFiles: Record<string, Record<string, string[]>> = {};
 if (isSection && sectionFiles) {
   const basePath = parts.join('/') + '/';
@@ -218,18 +206,25 @@ if (isSection && sectionFiles) {
     groupedFiles[group][subGroup].push(fp);
   }
 }
+
+// Accent color CSS variable based on campaign
+const accentStyle = campaignTheme === 'chains'
+  ? 'border-left-color: #9b2626;'
+  : campaignTheme === 'dawn'
+    ? 'border-left-color: #c9a227;'
+    : 'border-left-color: #6a7090;';
 ---
-<WikiLayout title={formatFileName(title)} section={isSection ? '' : section}>
+<WikiLayout title={formatFileName(title)} section={isSection ? '' : section} campaignTheme={campaignTheme}>
 
   <!-- Breadcrumb -->
-  <nav class="flex items-center gap-1 text-sm text-parchment-500 mb-6 flex-wrap">
-    <a href={base} class="hover:text-parchment-700 hover:underline">Home</a>
+  <nav class="flex items-center gap-1 text-sm text-chronicle-muted mb-8 flex-wrap">
+    <a href={base} class="hover:text-chronicle-text transition-colors">Home</a>
     {breadcrumb.map((crumb: {label: string; href: string; isLast: boolean}) => (
       <>
-        <span class="mx-1 text-parchment-300">/</span>
+        <span class="mx-1 text-chronicle-dim">/</span>
         {crumb.isLast
-          ? <span class="text-parchment-800 font-medium">{crumb.label}</span>
-          : <a href={crumb.href} class="hover:text-parchment-700 hover:underline">{crumb.label}</a>
+          ? <span class="text-chronicle-text">{crumb.label}</span>
+          : <a href={crumb.href} class="hover:text-chronicle-text transition-colors">{crumb.label}</a>
         }
       </>
     ))}
@@ -237,29 +232,33 @@ if (isSection && sectionFiles) {
 
   {isSection ? (
     <div>
-      <h1 class="font-serif text-4xl font-bold text-parchment-800 mb-8">{formatFileName(title)}</h1>
+      <div class="mb-10">
+        <h1 class="font-serif text-4xl font-normal text-chronicle-text mb-2">{formatFileName(title)}</h1>
+        <div class="w-16 h-0.5 mt-4" style={accentStyle.replace('border-left-color', 'background-color')}></div>
+      </div>
+
       {Object.entries(groupedFiles).sort(groupSort(section)).map(([group, subGroups]) => (
-        <div class="mb-8">
+        <div class="mb-10">
           {group !== '_root' && (
-            <h2 class="font-serif text-xl font-bold text-parchment-700 mb-3 border-b border-parchment-200 pb-2">
-              <a href={base + '/wiki/' + [...parts, group].map((p: string) => encodeURIComponent(p)).join('/')} class="hover:underline">{group}</a>
+            <h2 class="font-serif text-xl text-chronicle-text mb-4 pb-2 border-b border-chronicle-border">
+              <a href={base + '/wiki/' + [...parts, group].map((p: string) => encodeURIComponent(p)).join('/')} class="hover:text-accent-light transition-colors">{group}</a>
             </h2>
           )}
           {Object.entries(subGroups as any).sort().map(([subGroup, files]: [string, any]) => (
-            <div class={subGroup !== '_root' ? 'mb-6 ml-2' : 'mb-4'}>
+            <div class={subGroup !== '_root' ? 'mb-6 ml-3' : 'mb-4'}>
               {subGroup !== '_root' && (
-                <h3 class="font-serif text-base font-semibold text-parchment-600 mb-2 border-b border-parchment-100 pb-1">
-                  <a href={base + '/wiki/' + [...parts, group, subGroup].map((p: string) => encodeURIComponent(p)).join('/')} class="hover:underline">{subGroup}</a>
+                <h3 class="font-serif text-base text-chronicle-muted mb-3 pb-1 border-b border-chronicle-border/50">
+                  <a href={base + '/wiki/' + [...parts, group, subGroup].map((p: string) => encodeURIComponent(p)).join('/')} class="hover:text-chronicle-text transition-colors">{subGroup}</a>
                 </h3>
               )}
-              <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+              <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
                 {(files as string[]).sort(section === 'Stories' ? storySort(meta) : sessionAwareSort).map((fp: string) => {
                   const rawName = fp.split('/').pop() || fp;
                   const displayName = formatFileName(rawName);
                   const href = base + '/wiki/' + fp.split('/').map((p: string) => encodeURIComponent(p)).join('/');
                   return (
                     <li>
-                      <a href={href} class="block px-3 py-2 rounded-lg hover:bg-parchment-100 text-parchment-700 hover:text-parchment-900 transition-colors text-sm">
+                      <a href={href} class="block px-3 py-2 rounded text-sm text-chronicle-muted hover:text-chronicle-text hover:bg-chronicle-raised transition-colors truncate">
                         {displayName}
                       </a>
                     </li>
@@ -273,20 +272,22 @@ if (isSection && sectionFiles) {
     </div>
   ) : (
     <article data-pagefind-body>
-      <h1 class="font-serif text-4xl font-bold text-parchment-800 mb-6" data-pagefind-meta="title">{formatFileName(title)}</h1>
-      <div class="prose prose-lg max-w-none prose-headings:font-serif prose-a:text-parchment-700 prose-a:no-underline hover:prose-a:underline prose-hr:border-parchment-300 [&_.wiki-missing]:text-parchment-400 [&_.wiki-missing]:italic [&_.wiki-missing]:cursor-help">
+      <h1 class="font-serif text-4xl font-normal text-chronicle-text mb-8" data-pagefind-meta="title" style="letter-spacing: 0.01em;">
+        {formatFileName(title)}
+      </h1>
+      <div class="wiki-prose prose-lg">
         <Content />
       </div>
 
       {relatedLinks && relatedLinks.length > 0 && (
-        <aside class="mt-10 pt-6 border-t border-parchment-200">
-          <h2 class="font-serif text-lg font-semibold text-parchment-700 mb-3">Se også</h2>
+        <aside class="mt-12 pt-6 border-t border-chronicle-border">
+          <h2 class="font-serif text-lg text-chronicle-text mb-4">See also</h2>
           <ul class="flex flex-wrap gap-2">
             {relatedLinks.map((link: { label: string; href: string }) => (
               <li>
                 <a
                   href={base + link.href}
-                  class="inline-block px-3 py-1 rounded-full bg-parchment-100 text-parchment-700 hover:bg-parchment-200 hover:text-parchment-900 text-sm transition-colors"
+                  class="inline-block px-4 py-1.5 rounded bg-chronicle-raised border border-chronicle-border text-chronicle-muted hover:text-chronicle-text hover:border-chronicle-muted text-sm transition-colors"
                 >
                   {link.label}
                 </a>
@@ -297,14 +298,14 @@ if (isSection && sectionFiles) {
       )}
 
       {siblings && siblings.length > 0 && (
-        <aside class="mt-6 pt-6 border-t border-parchment-200">
-          <h2 class="font-serif text-sm font-semibold text-parchment-500 uppercase tracking-wide mb-3">Andre i samme gruppe</h2>
+        <aside class="mt-6 pt-6 border-t border-chronicle-border">
+          <h2 class="text-xs tracking-[0.18em] uppercase text-chronicle-dim mb-4">More in this section</h2>
           <ul class="flex flex-wrap gap-2">
             {siblings.map((link: { label: string; href: string }) => (
               <li>
                 <a
                   href={base + link.href}
-                  class="inline-block px-3 py-1 rounded-full bg-parchment-50 border border-parchment-200 text-parchment-600 hover:bg-parchment-100 hover:text-parchment-900 text-sm transition-colors"
+                  class="inline-block px-3 py-1 rounded bg-chronicle-card border border-chronicle-border text-chronicle-muted hover:text-chronicle-text hover:border-chronicle-muted text-sm transition-colors"
                 >
                   {link.label}
                 </a>

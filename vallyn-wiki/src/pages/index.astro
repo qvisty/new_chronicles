@@ -6,7 +6,7 @@ const allEntries = await getCollection('wiki');
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-// Vallyn-verdensider (fremhaevet oeverst)
+// Vallyn world pages (featured)
 const vallynEntries = allEntries
   .filter(e => e.id.startsWith('Vallyn/'))
   .map(e => ({
@@ -14,21 +14,14 @@ const vallynEntries = allEntries
     href: `${base}/wiki/${e.id.replace(/\.md$/, '').split('/').map(encodeURIComponent).join('/')}`,
   }));
 
-const vallynIcons: Record<string, string> = {
-  'A Summarized History': '📜',
-  'Gods and Other Powerful Beings': '⚡',
-  'State of Vallyn, 988 A.D.': '🗺️',
-  'The Feywild': '🌿',
-};
-
-// Byg undersektioner og filtal per top-sektion
+// Build sub-section and file counts per top section
 const sectionStats: Record<string, { count: number; subSections: string[] }> = {};
 const sectionSubSectionSlugs: Record<string, Record<string, string>> = {};
 
 for (const entry of allEntries) {
   const parts = entry.id.split('/');
   const section = parts[0];
-  if (section === 'Vallyn') continue; // Vallyn haandteres separat
+  if (section === 'Vallyn') continue;
 
   if (!sectionStats[section]) {
     sectionStats[section] = { count: 0, subSections: [] };
@@ -46,96 +39,154 @@ for (const entry of allEntries) {
   }
 }
 
-// Sorter sektioner: flest filer foerst
 const sectionList = Object.entries(sectionStats).sort((a, b) => b[1].count - a[1].count);
 
-const sectionIcons: Record<string, string> = {
-  'Chains of the Ancients': '⛓️',
-  'Dream of Dawn': '🌅',
-  'People': '👥',
-  'Recaps': '📜',
-  'Stories': '📖',
-};
+// Campaign metadata
+const campaigns = [
+  {
+    key: 'Chains of the Ancients',
+    tag: 'Campaign I',
+    title: 'Chains of the Ancients',
+    tagline: 'A continent fractured. An empire\'s ghost.\nA war that will decide everything.',
+    description: 'The Ridian Empire has fallen. In its wake, three powers rise to claim what remains. A party of soldiers, criminals, and celestials must navigate the siege of Isandor — and a darkness older than the war itself.',
+    accent: 'chains',
+    borderColor: 'border-chains',
+    tagColor: 'text-chains',
+    ctaColor: 'text-chains-light',
+  },
+  {
+    key: 'Dream of Dawn',
+    tag: 'Campaign II',
+    title: 'Dream of Dawn',
+    tagline: 'An empire in myth. A brother in shadow.\nA truth buried in light.',
+    description: 'In the golden city of Aurastis, the history of Regnum Aurelia is written in marble and myth. But something stirs beneath the surface — in ancient scrolls, in spellscars, and in the space between what the empire teaches and what actually happened.',
+    accent: 'dawn',
+    borderColor: 'border-dawn',
+    tagColor: 'text-dawn',
+    ctaColor: 'text-dawn-light',
+  },
+];
 ---
 <WikiLayout title="Vallyn Wiki" description="The living wiki of the world of Vallyn — characters, lore, stories and more.">
 
-  <!-- Vallyn Verdensindhold (featured) -->
-  <div class="mb-12">
-    <div class="text-center py-10 mb-6">
-      <h1 class="font-serif text-5xl font-bold text-parchment-800 mb-3">The World of Vallyn</h1>
-      <p class="text-lg text-parchment-600 max-w-2xl mx-auto">
-        A living wiki covering the lore, characters, stories and chronicles of New Chronicles.
+  <!-- Hero Section -->
+  <div class="relative -mx-6 -mt-10 mb-16 flex flex-col items-center justify-center text-center px-6 py-24"
+       style="background: linear-gradient(160deg, rgba(10,10,16,0.97) 0%, rgba(13,13,18,0.93) 50%, rgba(10,10,16,0.97) 100%);">
+    <div class="absolute inset-0 pointer-events-none"
+         style="background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(106, 112, 144, 0.12) 0%, transparent 70%);"></div>
+
+    <span class="relative text-xs tracking-[0.3em] uppercase text-accent-light mb-6">A Collection of Campaigns</span>
+    <h1 class="relative font-serif text-5xl sm:text-6xl md:text-7xl tracking-wider uppercase text-chronicle-text mb-4"
+        style="text-shadow: 0 2px 30px rgba(0,0,0,0.5);">
+      The Chronicles
+    </h1>
+    <div class="w-20 h-px mx-auto my-5" style="background: linear-gradient(to right, transparent, #6a7090, transparent);"></div>
+    <p class="relative font-serif italic text-lg text-chronicle-muted mb-12">
+      Two worlds. Two stories. Forged at the table.
+    </p>
+
+    <!-- Campaign Cards -->
+    <div class="relative grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[860px]">
+      {campaigns.map((c) => {
+        const sectionHref = `${base}/wiki/${encodeURIComponent(c.key)}`;
+        return (
+          <a href={sectionHref}
+             class={`group block relative bg-chronicle-card border border-chronicle-border ${c.borderColor} border-t-2 rounded-md p-8 text-left overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:border-opacity-100`}>
+            <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                 style={c.accent === 'chains'
+                   ? 'background: radial-gradient(ellipse at 30% 0%, rgba(155,38,38,0.1) 0%, transparent 65%);'
+                   : 'background: radial-gradient(ellipse at 70% 0%, rgba(201,162,39,0.09) 0%, transparent 65%);'}>
+            </div>
+            <span class={`relative block text-[0.67rem] tracking-[0.22em] uppercase ${c.tagColor} mb-3`}>{c.tag}</span>
+            <h2 class="relative font-serif text-xl sm:text-2xl font-normal text-chronicle-text mb-2 leading-tight">{c.title}</h2>
+            <p class="relative font-serif italic text-sm text-chronicle-muted mb-4 leading-relaxed whitespace-pre-line">{c.tagline}</p>
+            <p class="relative text-sm text-chronicle-dim mb-6 leading-relaxed">{c.description}</p>
+            <span class={`relative text-xs tracking-[0.16em] uppercase ${c.ctaColor}`}>Enter &rarr;</span>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+
+  <!-- World of Vallyn Section -->
+  <section class="mb-16">
+    <div class="text-center mb-8">
+      <span class="block text-[0.72rem] tracking-[0.18em] uppercase text-chronicle-muted mb-3">The Setting</span>
+      <h2 class="font-serif text-3xl text-chronicle-text mb-2">The World of Vallyn</h2>
+      <div class="w-16 h-0.5 bg-accent mx-auto my-4"></div>
+      <p class="text-chronicle-muted max-w-xl mx-auto">
+        The shared world behind the campaigns — gods, history, factions, and the forces that shape Vallyn.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {vallynEntries.map(({ name, href }) => (
-        <a
-          href={href}
-          class="group block bg-amber-50 border border-amber-200 rounded-xl p-5 hover:border-amber-400 hover:shadow-md transition-all"
-        >
-          <div class="text-2xl mb-2">{vallynIcons[name] ?? '🗺️'}</div>
-          <h2 class="font-serif text-base font-bold text-parchment-800 group-hover:text-parchment-600 transition-colors leading-snug">{name}</h2>
+        <a href={href}
+           class="group block bg-chronicle-card border border-chronicle-border border-l-2 border-l-accent rounded-md p-5 hover:border-accent transition-colors duration-200">
+          <h3 class="font-serif text-base text-chronicle-text group-hover:text-accent-light transition-colors leading-snug">{name}</h3>
         </a>
       ))}
     </div>
-    <div class="text-center">
-      <a href={`${base}/wiki/Vallyn`} class="text-sm text-parchment-500 hover:text-parchment-700 hover:underline">
-        Se alt om verdenen Vallyn →
+    <div class="text-center mt-4">
+      <a href={`${base}/wiki/Vallyn`} class="text-sm text-chronicle-muted hover:text-chronicle-text transition-colors">
+        Explore the full world &rarr;
       </a>
     </div>
-  </div>
+  </section>
 
-  <!-- Sektioner med undersektioner -->
-  <h2 class="font-serif text-2xl font-bold text-parchment-800 mb-5">Kampagner &amp; Indhold</h2>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-    {sectionList.map(([section, { count, subSections }]) => {
-      const icon = sectionIcons[section] ?? '📄';
-      const sectionHref = `${base}/wiki/${encodeURIComponent(section)}`;
-      const subLinks = sectionSubSectionSlugs[section] ?? {};
-      // Vis maks 6 undersektioner
-      const visibleSubs = subSections.slice(0, 6);
-      return (
-        <div class="group block bg-white rounded-2xl border border-parchment-200 p-6 hover:border-parchment-300 hover:shadow-sm transition-all">
-          <a href={sectionHref} class="flex items-start gap-3 mb-3">
-            <span class="text-3xl">{icon}</span>
-            <div>
-              <h2 class="font-serif text-xl font-bold text-parchment-800 group-hover:text-parchment-600 transition-colors">{section}</h2>
-              <p class="text-xs text-parchment-400 mt-0.5">{count} {count === 1 ? 'side' : 'sider'}</p>
-            </div>
-          </a>
-          {visibleSubs.length > 0 && (
-            <ul class="space-y-1 border-t border-parchment-100 pt-3">
-              {visibleSubs.map(sub => (
-                <li>
-                  <a
-                    href={subLinks[sub] ?? sectionHref}
-                    class="block text-sm text-parchment-600 hover:text-parchment-900 hover:underline px-1 py-0.5 rounded transition-colors truncate"
-                  >
-                    {sub}
-                  </a>
-                </li>
-              ))}
-              {subSections.length > 6 && (
-                <li>
-                  <a href={sectionHref} class="block text-xs text-parchment-400 hover:text-parchment-600 px-1 py-0.5 italic">
-                    + {subSections.length - 6} mere…
-                  </a>
-                </li>
-              )}
-            </ul>
-          )}
-        </div>
-      );
-    })}
-  </div>
+  <!-- Other Sections -->
+  <section class="mb-16">
+    <div class="text-center mb-8">
+      <span class="block text-[0.72rem] tracking-[0.18em] uppercase text-chronicle-muted mb-3">Browse</span>
+      <h2 class="font-serif text-3xl text-chronicle-text mb-2">Campaigns &amp; Content</h2>
+      <div class="w-16 h-0.5 bg-accent mx-auto my-4"></div>
+    </div>
 
-  <div class="bg-white rounded-2xl border border-parchment-200 p-8">
-    <h2 class="font-serif text-2xl font-bold text-parchment-800 mb-4">Om denne wiki</h2>
-    <p class="text-parchment-700 leading-relaxed">
-      Denne wiki samler lore, karakterer, sessionsrekaps, baghistorier og stories fra New Chronicles tabletop-RPG-kampagnen i verdenen Vallyn.
-      Brug soegningen ovenfor til at finde noget via sogeord, eller gennemse sektionerne ovenfor.
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {sectionList.map(([section, { count, subSections }]) => {
+        const sectionHref = `${base}/wiki/${encodeURIComponent(section)}`;
+        const subLinks = sectionSubSectionSlugs[section] ?? {};
+        const visibleSubs = subSections.slice(0, 6);
+        return (
+          <div class="group bg-chronicle-card border border-chronicle-border rounded-md overflow-hidden hover:border-chronicle-muted/40 transition-colors duration-200">
+            <a href={sectionHref} class="block p-5 border-b border-chronicle-border">
+              <h3 class="font-serif text-lg text-chronicle-text group-hover:text-accent-light transition-colors">{section}</h3>
+              <p class="text-xs text-chronicle-dim mt-1">{count} {count === 1 ? 'page' : 'pages'}</p>
+            </a>
+            {visibleSubs.length > 0 && (
+              <ul class="p-4 space-y-1">
+                {visibleSubs.map(sub => (
+                  <li>
+                    <a
+                      href={subLinks[sub] ?? sectionHref}
+                      class="block text-sm text-chronicle-muted hover:text-chronicle-text px-2 py-1 rounded transition-colors truncate"
+                    >
+                      {sub}
+                    </a>
+                  </li>
+                ))}
+                {subSections.length > 6 && (
+                  <li>
+                    <a href={sectionHref} class="block text-xs text-chronicle-dim hover:text-chronicle-muted px-2 py-1 italic">
+                      + {subSections.length - 6} more...
+                    </a>
+                  </li>
+                )}
+              </ul>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="bg-chronicle-card border border-chronicle-border rounded-md p-8 mb-8">
+    <h2 class="font-serif text-2xl text-chronicle-text mb-4">About this wiki</h2>
+    <p class="text-chronicle-muted leading-relaxed">
+      This wiki collects lore, characters, session recaps, backstories, and short stories from the New Chronicles tabletop RPG campaigns set in the world of Vallyn.
+      Use the search above to find content, or browse the sections.
     </p>
-  </div>
+  </section>
 
 </WikiLayout>
