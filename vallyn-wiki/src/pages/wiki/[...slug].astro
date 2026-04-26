@@ -236,14 +236,14 @@ const accentStyle = campaignTheme === 'chains'
     <div>
       <div class="mb-12 reveal">
         <p class="text-xs tracking-[0.2em] uppercase text-acid font-medium mb-3">{section}</p>
-        <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-chronicle-text mb-3">{formatFileName(title)}</h1>
+        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-[-0.04em] text-chronicle-text mb-3">{formatFileName(title)}</h1>
         <div class="w-16 h-0.5 mt-4" style={accentStyle.replace('border-left-color', 'background-color')}></div>
       </div>
 
       {Object.entries(groupedFiles).sort(groupSort(section)).map(([group, subGroups]) => (
         <div class="mb-10">
           {group !== '_root' && (
-            <h2 class="text-lg font-semibold text-chronicle-text mb-4 pb-2 border-b border-chronicle-border tracking-[-0.02em]">
+            <h2 class="text-lg font-bold text-chronicle-text mb-4 pb-2 border-b border-chronicle-border tracking-[-0.03em]">
               <a href={base + '/wiki/' + [...parts, group].map((p: string) => encodeURIComponent(p)).join('/')} class="hover:text-acid transition-colors duration-200">{group}</a>
             </h2>
           )}
@@ -275,7 +275,7 @@ const accentStyle = campaignTheme === 'chains'
     </div>
   ) : (
     <article data-pagefind-body class="reveal">
-      <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-chronicle-text mb-8" data-pagefind-meta="title">
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-[-0.04em] text-chronicle-text mb-8" data-pagefind-meta="title">
         {formatFileName(title)}
       </h1>
       <div class="wiki-prose prose-lg">

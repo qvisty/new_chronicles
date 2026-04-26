@@ -72,7 +72,7 @@ const campaigns = [
       {totalPages} pages &mdash; A living world
     </div>
 
-    <h1 class="reveal relative font-serif text-5xl sm:text-6xl md:text-7xl tracking-wider uppercase text-chronicle-text mb-4"
+    <h1 class="reveal relative font-sans text-5xl sm:text-6xl md:text-7xl font-black tracking-[-0.045em] text-chronicle-text mb-4"
         style="text-shadow: 0 2px 30px rgba(0,0,0,0.5);">
       The <span class="text-acid">Chronicles</span>
     </h1>
@@ -103,8 +103,8 @@ const campaigns = [
                  style={`background: radial-gradient(ellipse at 50% 0%, ${c.accentGlow} 0%, transparent 65%);`}>
             </div>
             <span class="relative block text-[0.65rem] tracking-[0.22em] uppercase font-semibold mb-3" style={`color: ${c.accentColor};`}>{c.tag}</span>
-            <h2 class="relative font-serif text-xl sm:text-2xl font-normal text-chronicle-text mb-2 leading-tight">{c.title}</h2>
-            <p class="relative font-serif italic text-sm text-chronicle-muted mb-4 leading-relaxed whitespace-pre-line">{c.tagline}</p>
+            <h2 class="relative font-sans text-xl sm:text-2xl font-extrabold tracking-[-0.03em] text-chronicle-text mb-2 leading-tight">{c.title}</h2>
+            <p class="relative text-sm text-chronicle-muted mb-4 leading-relaxed whitespace-pre-line tracking-[-0.01em]">{c.tagline}</p>
             <p class="relative text-sm text-chronicle-dim mb-6 leading-relaxed">{c.description}</p>
             <span class="relative inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.08em] uppercase transition-colors duration-200 group-hover:text-acid" style={`color: ${c.accentColor};`}>
               Explore
@@ -121,19 +121,19 @@ const campaigns = [
     <p class="reveal text-center text-xs tracking-[0.2em] uppercase text-chronicle-dim mb-10 font-medium">The world at a glance</p>
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-[900px] mx-auto">
       <div class="reveal text-center">
-        <div class="text-3xl sm:text-4xl font-bold tracking-tight text-chronicle-text">{totalPages}</div>
+        <div class="text-3xl sm:text-4xl font-extrabold tracking-[-0.04em] text-chronicle-text">{totalPages}</div>
         <p class="text-sm text-chronicle-muted mt-1">Wiki pages</p>
       </div>
       <div class="reveal text-center">
-        <div class="text-3xl sm:text-4xl font-bold tracking-tight text-chronicle-text">{campaigns.length}</div>
+        <div class="text-3xl sm:text-4xl font-extrabold tracking-[-0.04em] text-chronicle-text">{campaigns.length}</div>
         <p class="text-sm text-chronicle-muted mt-1">Campaigns</p>
       </div>
       <div class="reveal text-center">
-        <div class="text-3xl sm:text-4xl font-bold tracking-tight text-chronicle-text">{sectionList.length}</div>
+        <div class="text-3xl sm:text-4xl font-extrabold tracking-[-0.04em] text-chronicle-text">{sectionList.length}</div>
         <p class="text-sm text-chronicle-muted mt-1">Sections</p>
       </div>
       <div class="reveal text-center">
-        <div class="text-3xl sm:text-4xl font-bold tracking-tight text-chronicle-text">1</div>
+        <div class="text-3xl sm:text-4xl font-extrabold tracking-[-0.04em] text-chronicle-text">1</div>
         <p class="text-sm text-chronicle-muted mt-1">World</p>
       </div>
     </div>
@@ -143,7 +143,7 @@ const campaigns = [
   <section class="mb-20">
     <div class="reveal text-center mb-10">
       <p class="text-xs tracking-[0.2em] uppercase text-acid font-medium mb-3">Browse</p>
-      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-chronicle-text mb-2">Campaigns &amp; Content</h2>
+      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-[-0.04em] text-chronicle-text mb-2">Campaigns &amp; Content</h2>
       <p class="text-chronicle-muted text-sm max-w-md mx-auto">Explore lore, characters, session recaps, backstories, and short stories from the world of Vallyn.</p>
     </div>
 
@@ -157,7 +157,7 @@ const campaigns = [
           <div class="catalyst-card group overflow-hidden reveal">
             <a href={sectionHref} class="block p-5 border-b border-chronicle-border">
               <div class="flex items-center justify-between">
-                <h3 class="text-[15px] font-semibold text-chronicle-text tracking-[-0.02em] group-hover:text-acid transition-colors">{section}</h3>
+                <h3 class="text-[15px] font-bold text-chronicle-text tracking-[-0.03em] group-hover:text-acid transition-colors">{section}</h3>
                 <span class="text-[11px] font-medium text-chronicle-dim bg-chronicle-raised px-2 py-0.5 rounded-full">{count}</span>
               </div>
             </a>
@@ -219,7 +219,7 @@ const campaigns = [
   <!-- CTA Banner (Catalyst-style) -->
   <section class="reveal catalyst-card p-8 sm:p-12 mb-8 text-center overflow-hidden relative">
     <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at 50% 0%, rgba(200,230,0,0.05) 0%, transparent 70%);"></div>
-    <h2 class="relative text-2xl sm:text-3xl font-bold tracking-tight text-chronicle-text mb-3">About this wiki</h2>
+    <h2 class="relative text-2xl sm:text-3xl font-extrabold tracking-[-0.04em] text-chronicle-text mb-3">About this wiki</h2>
     <p class="relative text-chronicle-muted leading-relaxed max-w-2xl mx-auto mb-6">
       This wiki collects lore, characters, session recaps, backstories, and short stories from the New Chronicles tabletop RPG campaigns set in the world of Vallyn.
     </p>
