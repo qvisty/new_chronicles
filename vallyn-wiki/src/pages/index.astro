@@ -32,6 +32,7 @@ for (const entry of allEntries) {
 }
 
 const sectionList = Object.entries(sectionStats).sort((a, b) => b[1].count - a[1].count);
+const totalPages = allEntries.length;
 
 // Campaign metadata
 const campaigns = [
@@ -42,9 +43,8 @@ const campaigns = [
     tagline: 'A continent fractured. An empire\'s ghost.\nA war that will decide everything.',
     description: 'The Ridian Empire has fallen. In its wake, three powers rise to claim what remains. A party of soldiers, criminals, and celestials must navigate the siege of Isandor — and a darkness older than the war itself.',
     accent: 'chains',
-    borderColor: 'border-chains',
-    tagColor: 'text-chains',
-    ctaColor: 'text-chains-light',
+    accentColor: '#9b2626',
+    accentGlow: 'rgba(155, 38, 38, 0.12)',
   },
   {
     key: 'Dream of Dawn',
@@ -53,59 +53,98 @@ const campaigns = [
     tagline: 'An empire in myth. A brother in shadow.\nA truth buried in light.',
     description: 'In the golden city of Aurastis, the history of Regnum Aurelia is written in marble and myth. But something stirs beneath the surface — in ancient scrolls, in spellscars, and in the space between what the empire teaches and what actually happened.',
     accent: 'dawn',
-    borderColor: 'border-dawn',
-    tagColor: 'text-dawn',
-    ctaColor: 'text-dawn-light',
+    accentColor: '#c9a227',
+    accentGlow: 'rgba(201, 162, 39, 0.10)',
   },
 ];
 ---
 <WikiLayout title="Vallyn Wiki" description="The living wiki of the world of Vallyn — characters, lore, stories and more.">
 
-  <!-- Hero Section -->
-  <div class="relative -mx-6 -mt-10 mb-16 flex flex-col items-center justify-center text-center px-6 py-24"
-       style="background: linear-gradient(160deg, rgba(10,10,16,0.97) 0%, rgba(13,13,18,0.93) 50%, rgba(10,10,16,0.97) 100%);">
+  <!-- Hero Section (Catalyst-style) -->
+  <section class="relative -mx-6 -mt-10 mb-20 flex flex-col items-center justify-center text-center px-6 py-28"
+       style="background: linear-gradient(160deg, rgba(10,10,15,0.98) 0%, rgba(17,17,24,0.95) 50%, rgba(10,10,15,0.98) 100%);">
     <div class="absolute inset-0 pointer-events-none"
-         style="background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(106, 112, 144, 0.12) 0%, transparent 70%);"></div>
+         style="background: radial-gradient(ellipse 60% 50% at 50% 30%, rgba(200,230,0,0.04) 0%, transparent 70%);"></div>
 
-    <span class="relative text-xs tracking-[0.3em] uppercase text-accent-light mb-6">A Collection of Campaigns</span>
-    <h1 class="relative font-serif text-5xl sm:text-6xl md:text-7xl tracking-wider uppercase text-chronicle-text mb-4"
+    <!-- Badge (Catalyst pattern) -->
+    <div class="reveal relative inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-chronicle-border bg-chronicle-surface text-xs font-medium text-chronicle-muted mb-8 tracking-[-0.01em]">
+      <span class="w-1.5 h-1.5 rounded-full bg-acid animate-pulse"></span>
+      {totalPages} pages &mdash; A living world
+    </div>
+
+    <h1 class="reveal relative font-serif text-5xl sm:text-6xl md:text-7xl tracking-wider uppercase text-chronicle-text mb-4"
         style="text-shadow: 0 2px 30px rgba(0,0,0,0.5);">
-      The Chronicles
+      The <span class="text-acid">Chronicles</span>
     </h1>
-    <div class="w-20 h-px mx-auto my-5" style="background: linear-gradient(to right, transparent, #6a7090, transparent);"></div>
-    <p class="relative font-serif italic text-lg text-chronicle-muted mb-12">
+
+    <div class="w-20 h-px mx-auto my-5" style="background: linear-gradient(to right, transparent, #C8E600, transparent);"></div>
+
+    <p class="reveal relative text-lg text-chronicle-muted mb-10 max-w-lg tracking-[-0.01em]">
       Two worlds. Two stories. Forged at the table.
     </p>
 
-    <!-- Campaign Cards -->
-    <div class="relative grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[860px]">
+    <div class="reveal relative flex flex-wrap justify-center gap-4 mb-16">
+      <a href={`${base}/wiki/Chains%20of%20the%20Ancients`} class="btn-acid">
+        Enter Campaign I
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href={`${base}/wiki/Dream%20of%20Dawn`} class="btn-ghost">Enter Campaign II</a>
+    </div>
+
+    <!-- Campaign Cards (Catalyst card system) -->
+    <div class="reveal relative grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[900px]">
       {campaigns.map((c) => {
         const sectionHref = `${base}/wiki/${encodeURIComponent(c.key)}`;
         return (
           <a href={sectionHref}
-             class={`group block relative bg-chronicle-card border border-chronicle-border ${c.borderColor} border-t-2 rounded-md p-8 text-left overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:border-opacity-100`}>
+             class="catalyst-card group block relative p-8 text-left overflow-hidden"
+             style={`border-top: 2px solid ${c.accentColor};`}>
             <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                 style={c.accent === 'chains'
-                   ? 'background: radial-gradient(ellipse at 30% 0%, rgba(155,38,38,0.1) 0%, transparent 65%);'
-                   : 'background: radial-gradient(ellipse at 70% 0%, rgba(201,162,39,0.09) 0%, transparent 65%);'}>
+                 style={`background: radial-gradient(ellipse at 50% 0%, ${c.accentGlow} 0%, transparent 65%);`}>
             </div>
-            <span class={`relative block text-[0.67rem] tracking-[0.22em] uppercase ${c.tagColor} mb-3`}>{c.tag}</span>
+            <span class="relative block text-[0.65rem] tracking-[0.22em] uppercase font-semibold mb-3" style={`color: ${c.accentColor};`}>{c.tag}</span>
             <h2 class="relative font-serif text-xl sm:text-2xl font-normal text-chronicle-text mb-2 leading-tight">{c.title}</h2>
             <p class="relative font-serif italic text-sm text-chronicle-muted mb-4 leading-relaxed whitespace-pre-line">{c.tagline}</p>
             <p class="relative text-sm text-chronicle-dim mb-6 leading-relaxed">{c.description}</p>
-            <span class={`relative text-xs tracking-[0.16em] uppercase ${c.ctaColor}`}>Enter &rarr;</span>
+            <span class="relative inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.08em] uppercase transition-colors duration-200 group-hover:text-acid" style={`color: ${c.accentColor};`}>
+              Explore
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
           </a>
         );
       })}
     </div>
-  </div>
+  </section>
 
-  <!-- Campaigns & Content -->
-  <section class="mb-16">
-    <div class="text-center mb-8">
-      <span class="block text-[0.72rem] tracking-[0.18em] uppercase text-chronicle-muted mb-3">Browse</span>
-      <h2 class="font-serif text-3xl text-chronicle-text mb-2">Campaigns &amp; Content</h2>
-      <div class="w-16 h-0.5 bg-accent mx-auto my-4"></div>
+  <!-- Metrics section (Catalyst-style stats) -->
+  <section class="mb-20">
+    <p class="reveal text-center text-xs tracking-[0.2em] uppercase text-chronicle-dim mb-10 font-medium">The world at a glance</p>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-[900px] mx-auto">
+      <div class="reveal text-center">
+        <div class="text-3xl sm:text-4xl font-bold tracking-tight text-chronicle-text">{totalPages}</div>
+        <p class="text-sm text-chronicle-muted mt-1">Wiki pages</p>
+      </div>
+      <div class="reveal text-center">
+        <div class="text-3xl sm:text-4xl font-bold tracking-tight text-chronicle-text">{campaigns.length}</div>
+        <p class="text-sm text-chronicle-muted mt-1">Campaigns</p>
+      </div>
+      <div class="reveal text-center">
+        <div class="text-3xl sm:text-4xl font-bold tracking-tight text-chronicle-text">{sectionList.length}</div>
+        <p class="text-sm text-chronicle-muted mt-1">Sections</p>
+      </div>
+      <div class="reveal text-center">
+        <div class="text-3xl sm:text-4xl font-bold tracking-tight text-chronicle-text">1</div>
+        <p class="text-sm text-chronicle-muted mt-1">World</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Bento Grid (Catalyst engine-style) -->
+  <section class="mb-20">
+    <div class="reveal text-center mb-10">
+      <p class="text-xs tracking-[0.2em] uppercase text-acid font-medium mb-3">Browse</p>
+      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-chronicle-text mb-2">Campaigns &amp; Content</h2>
+      <p class="text-chronicle-muted text-sm max-w-md mx-auto">Explore lore, characters, session recaps, backstories, and short stories from the world of Vallyn.</p>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -115,18 +154,20 @@ const campaigns = [
         const visibleSubs = subSections.slice(0, 6);
         const hiddenSubs = subSections.slice(6);
         return (
-          <div class="group bg-chronicle-card border border-chronicle-border rounded-md overflow-hidden hover:border-chronicle-muted/40 transition-colors duration-200">
+          <div class="catalyst-card group overflow-hidden reveal">
             <a href={sectionHref} class="block p-5 border-b border-chronicle-border">
-              <h3 class="font-serif text-lg text-chronicle-text group-hover:text-accent-light transition-colors">{section}</h3>
-              <p class="text-xs text-chronicle-dim mt-1">{count} {count === 1 ? 'page' : 'pages'}</p>
+              <div class="flex items-center justify-between">
+                <h3 class="text-[15px] font-semibold text-chronicle-text tracking-[-0.02em] group-hover:text-acid transition-colors">{section}</h3>
+                <span class="text-[11px] font-medium text-chronicle-dim bg-chronicle-raised px-2 py-0.5 rounded-full">{count}</span>
+              </div>
             </a>
             {visibleSubs.length > 0 && (
-              <ul class="p-4 space-y-1">
+              <ul class="p-4 space-y-0.5">
                 {visibleSubs.map(sub => (
                   <li>
                     <a
                       href={subLinks[sub] ?? sectionHref}
-                      class="block text-sm text-chronicle-muted hover:text-chronicle-text px-2 py-1 rounded transition-colors truncate"
+                      class="block text-sm text-chronicle-muted hover:text-chronicle-text px-2.5 py-1.5 rounded-lg hover:bg-chronicle-raised transition-colors truncate"
                     >
                       {sub}
                     </a>
@@ -138,7 +179,7 @@ const campaigns = [
                       {hiddenSubs.map(sub => (
                         <a
                           href={subLinks[sub] ?? sectionHref}
-                          class="block text-sm text-chronicle-muted hover:text-chronicle-text px-2 py-1 rounded transition-colors truncate"
+                          class="block text-sm text-chronicle-muted hover:text-chronicle-text px-2.5 py-1.5 rounded-lg hover:bg-chronicle-raised transition-colors truncate"
                         >
                           {sub}
                         </a>
@@ -148,9 +189,9 @@ const campaigns = [
                       <button
                         type="button"
                         data-expand-btn
-                        class="block text-xs text-chronicle-dim hover:text-chronicle-muted px-2 py-1 italic cursor-pointer bg-transparent border-0"
+                        class="block text-xs text-chronicle-dim hover:text-acid px-2.5 py-1.5 cursor-pointer bg-transparent border-0 transition-colors"
                       >
-                        + {hiddenSubs.length} more...
+                        + {hiddenSubs.length} more&hellip;
                       </button>
                     </li>
                   </>
@@ -175,13 +216,20 @@ const campaigns = [
     </script>
   </section>
 
-  <!-- About -->
-  <section class="bg-chronicle-card border border-chronicle-border rounded-md p-8 mb-8">
-    <h2 class="font-serif text-2xl text-chronicle-text mb-4">About this wiki</h2>
-    <p class="text-chronicle-muted leading-relaxed">
+  <!-- CTA Banner (Catalyst-style) -->
+  <section class="reveal catalyst-card p-8 sm:p-12 mb-8 text-center overflow-hidden relative">
+    <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at 50% 0%, rgba(200,230,0,0.05) 0%, transparent 70%);"></div>
+    <h2 class="relative text-2xl sm:text-3xl font-bold tracking-tight text-chronicle-text mb-3">About this wiki</h2>
+    <p class="relative text-chronicle-muted leading-relaxed max-w-2xl mx-auto mb-6">
       This wiki collects lore, characters, session recaps, backstories, and short stories from the New Chronicles tabletop RPG campaigns set in the world of Vallyn.
-      Use the search above to find content, or browse the sections.
     </p>
+    <div class="relative flex flex-wrap justify-center gap-3">
+      <a href={`${base}/wiki/Vallyn`} class="btn-acid">
+        Explore the World
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href={`${base}/wiki/People`} class="btn-ghost">Meet the Characters</a>
+    </div>
   </section>
 
 </WikiLayout>

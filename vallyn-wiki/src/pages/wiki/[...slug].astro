@@ -218,15 +218,15 @@ const accentStyle = campaignTheme === 'chains'
 ---
 <WikiLayout title={formatFileName(title)} section={isSection ? '' : section} campaignTheme={campaignTheme}>
 
-  <!-- Breadcrumb -->
-  <nav class="flex items-center gap-1 text-sm text-chronicle-muted mb-8 flex-wrap">
-    <a href={base} class="hover:text-chronicle-text transition-colors">Home</a>
+  <!-- Breadcrumb (Catalyst-style) -->
+  <nav class="flex items-center gap-1.5 text-sm text-chronicle-muted mb-10 flex-wrap reveal">
+    <a href={base} class="hover:text-acid transition-colors duration-200">Home</a>
     {breadcrumb.map((crumb: {label: string; href: string; isLast: boolean}) => (
       <>
         <span class="mx-1 text-chronicle-dim">/</span>
         {crumb.isLast
-          ? <span class="text-chronicle-text">{crumb.label}</span>
-          : <a href={crumb.href} class="hover:text-chronicle-text transition-colors">{crumb.label}</a>
+          ? <span class="text-chronicle-text font-medium">{crumb.label}</span>
+          : <a href={crumb.href} class="hover:text-acid transition-colors duration-200">{crumb.label}</a>
         }
       </>
     ))}
@@ -234,23 +234,24 @@ const accentStyle = campaignTheme === 'chains'
 
   {isSection ? (
     <div>
-      <div class="mb-10">
-        <h1 class="font-serif text-4xl font-normal text-chronicle-text mb-2">{formatFileName(title)}</h1>
+      <div class="mb-12 reveal">
+        <p class="text-xs tracking-[0.2em] uppercase text-acid font-medium mb-3">{section}</p>
+        <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-chronicle-text mb-3">{formatFileName(title)}</h1>
         <div class="w-16 h-0.5 mt-4" style={accentStyle.replace('border-left-color', 'background-color')}></div>
       </div>
 
       {Object.entries(groupedFiles).sort(groupSort(section)).map(([group, subGroups]) => (
         <div class="mb-10">
           {group !== '_root' && (
-            <h2 class="font-serif text-xl text-chronicle-text mb-4 pb-2 border-b border-chronicle-border">
-              <a href={base + '/wiki/' + [...parts, group].map((p: string) => encodeURIComponent(p)).join('/')} class="hover:text-accent-light transition-colors">{group}</a>
+            <h2 class="text-lg font-semibold text-chronicle-text mb-4 pb-2 border-b border-chronicle-border tracking-[-0.02em]">
+              <a href={base + '/wiki/' + [...parts, group].map((p: string) => encodeURIComponent(p)).join('/')} class="hover:text-acid transition-colors duration-200">{group}</a>
             </h2>
           )}
           {Object.entries(subGroups as any).sort().map(([subGroup, files]: [string, any]) => (
             <div class={subGroup !== '_root' ? 'mb-6 ml-3' : 'mb-4'}>
               {subGroup !== '_root' && (
-                <h3 class="font-serif text-base text-chronicle-muted mb-3 pb-1 border-b border-chronicle-border/50">
-                  <a href={base + '/wiki/' + [...parts, group, subGroup].map((p: string) => encodeURIComponent(p)).join('/')} class="hover:text-chronicle-text transition-colors">{subGroup}</a>
+                <h3 class="text-sm font-medium text-chronicle-muted mb-3 pb-1 border-b border-chronicle-border/50 tracking-[-0.01em]">
+                  <a href={base + '/wiki/' + [...parts, group, subGroup].map((p: string) => encodeURIComponent(p)).join('/')} class="hover:text-acid transition-colors duration-200">{subGroup}</a>
                 </h3>
               )}
               <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
@@ -260,7 +261,7 @@ const accentStyle = campaignTheme === 'chains'
                   const href = base + '/wiki/' + fp.split('/').map((p: string) => encodeURIComponent(p)).join('/');
                   return (
                     <li>
-                      <a href={href} class="block px-3 py-2 rounded text-sm text-chronicle-muted hover:text-chronicle-text hover:bg-chronicle-raised transition-colors truncate">
+                      <a href={href} class="block px-3 py-2 rounded-lg text-sm text-chronicle-muted hover:text-chronicle-text hover:bg-chronicle-raised transition-colors duration-200 truncate">
                         {displayName}
                       </a>
                     </li>
@@ -273,8 +274,8 @@ const accentStyle = campaignTheme === 'chains'
       ))}
     </div>
   ) : (
-    <article data-pagefind-body>
-      <h1 class="font-serif text-4xl font-normal text-chronicle-text mb-8" data-pagefind-meta="title" style="letter-spacing: 0.01em;">
+    <article data-pagefind-body class="reveal">
+      <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-chronicle-text mb-8" data-pagefind-meta="title">
         {formatFileName(title)}
       </h1>
       <div class="wiki-prose prose-lg">
@@ -283,13 +284,13 @@ const accentStyle = campaignTheme === 'chains'
 
       {relatedLinks && relatedLinks.length > 0 && (
         <aside class="mt-12 pt-6 border-t border-chronicle-border">
-          <h2 class="font-serif text-lg text-chronicle-text mb-4">See also</h2>
+          <h2 class="text-xs tracking-[0.2em] uppercase text-acid font-medium mb-4">See also</h2>
           <ul class="flex flex-wrap gap-2">
             {relatedLinks.map((link: { label: string; href: string }) => (
               <li>
                 <a
                   href={base + link.href}
-                  class="inline-block px-4 py-1.5 rounded bg-chronicle-raised border border-chronicle-border text-chronicle-muted hover:text-chronicle-text hover:border-chronicle-muted text-sm transition-colors"
+                  class="inline-block px-4 py-1.5 rounded-lg bg-chronicle-raised border border-chronicle-border text-chronicle-muted hover:text-chronicle-text hover:border-acid/30 text-sm transition-all duration-200"
                 >
                   {link.label}
                 </a>
@@ -301,13 +302,13 @@ const accentStyle = campaignTheme === 'chains'
 
       {siblings && siblings.length > 0 && (
         <aside class="mt-6 pt-6 border-t border-chronicle-border">
-          <h2 class="text-xs tracking-[0.18em] uppercase text-chronicle-dim mb-4">More in this section</h2>
+          <h2 class="text-xs tracking-[0.2em] uppercase text-chronicle-dim font-medium mb-4">More in this section</h2>
           <ul class="flex flex-wrap gap-2">
             {siblings.map((link: { label: string; href: string }) => (
               <li>
                 <a
                   href={base + link.href}
-                  class="inline-block px-3 py-1 rounded bg-chronicle-card border border-chronicle-border text-chronicle-muted hover:text-chronicle-text hover:border-chronicle-muted text-sm transition-colors"
+                  class="inline-block px-3 py-1.5 rounded-lg bg-chronicle-card border border-chronicle-border text-chronicle-muted hover:text-chronicle-text hover:border-acid/30 text-sm transition-all duration-200"
                 >
                   {link.label}
                 </a>

@@ -4,15 +4,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Dark theme inspired by the-chronicles
+        // Dark theme with Catalyst design language
         chronicle: {
-          bg: '#0d0d12',
-          card: '#14141e',
-          raised: '#1c1c28',
-          border: '#2a2a38',
-          text: '#ddd4bb',
+          bg: '#0a0a0f',
+          card: '#111118',
+          raised: '#1a1a24',
+          surface: '#16161f',
+          border: '#252530',
+          text: '#e8e4dc',
           muted: '#8a8070',
-          dim: '#6a6458',
+          dim: '#5a5650',
+        },
+        // Catalyst acid accent (adapted for dark theme)
+        acid: {
+          DEFAULT: '#C8E600',
+          hover: '#b8d400',
+          dim: 'rgba(200, 230, 0, 0.08)',
+          glow: 'rgba(200, 230, 0, 0.15)',
         },
         // Campaign accent: Chains of the Ancients (red)
         chains: {
@@ -34,27 +42,20 @@ export default {
           light: '#8a90b8',
           dim: 'rgba(106, 112, 144, 0.12)',
         },
-        // Keep parchment for backward compat in prose
-        parchment: {
-          50: '#fdf8f0',
-          100: '#f9eedb',
-          200: '#f3dbb6',
-          300: '#e9c27e',
-          400: '#dea44a',
-          500: '#c8882a',
-          600: '#a86b1e',
-          700: '#85511a',
-          800: '#6b3f1a',
-          900: '#593318',
-        },
-        ink: {
-          50: '#f4f3f0',
-          900: '#1c1a14',
-        }
       },
       fontFamily: {
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
         serif: ['Georgia', "'Palatino Linotype'", 'Palatino', 'serif'],
-        sans: ["'Segoe UI'", 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      borderRadius: {
+        'catalyst': '16px',
+      },
+      transitionTimingFunction: {
+        'catalyst': 'cubic-bezier(0.22, 1, 0.36, 1)',
+      },
+      boxShadow: {
+        'card-inset': 'inset 0 1px 0 rgba(255,255,255,0.03)',
+        'card-hover': '0 8px 30px rgba(0,0,0,0.3)',
       },
     },
   },
