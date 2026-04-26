@@ -6,14 +6,6 @@ const allEntries = await getCollection('wiki');
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-// Vallyn world pages (featured)
-const vallynEntries = allEntries
-  .filter(e => e.id.startsWith('Vallyn/'))
-  .map(e => ({
-    name: e.id.replace(/^Vallyn\//, '').replace(/\.md$/, ''),
-    href: `${base}/wiki/${e.id.replace(/\.md$/, '').split('/').map(encodeURIComponent).join('/')}`,
-  }));
-
 // Build sub-section and file counts per top section
 const sectionStats: Record<string, { count: number; subSections: string[] }> = {};
 const sectionSubSectionSlugs: Record<string, Record<string, string>> = {};
@@ -108,33 +100,7 @@ const campaigns = [
     </div>
   </div>
 
-  <!-- World of Vallyn Section -->
-  <section class="mb-16">
-    <div class="text-center mb-8">
-      <span class="block text-[0.72rem] tracking-[0.18em] uppercase text-chronicle-muted mb-3">The Setting</span>
-      <h2 class="font-serif text-3xl text-chronicle-text mb-2">The World of Vallyn</h2>
-      <div class="w-16 h-0.5 bg-accent mx-auto my-4"></div>
-      <p class="text-chronicle-muted max-w-xl mx-auto">
-        The shared world behind the campaigns — gods, history, factions, and the forces that shape Vallyn.
-      </p>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {vallynEntries.map(({ name, href }) => (
-        <a href={href}
-           class="group block bg-chronicle-card border border-chronicle-border border-l-2 border-l-accent rounded-md p-5 hover:border-accent transition-colors duration-200">
-          <h3 class="font-serif text-base text-chronicle-text group-hover:text-accent-light transition-colors leading-snug">{name}</h3>
-        </a>
-      ))}
-    </div>
-    <div class="text-center mt-4">
-      <a href={`${base}/wiki/Vallyn`} class="text-sm text-chronicle-muted hover:text-chronicle-text transition-colors">
-        Explore the full world &rarr;
-      </a>
-    </div>
-  </section>
-
-  <!-- Other Sections -->
+  <!-- Campaigns & Content -->
   <section class="mb-16">
     <div class="text-center mb-8">
       <span class="block text-[0.72rem] tracking-[0.18em] uppercase text-chronicle-muted mb-3">Browse</span>
@@ -147,6 +113,7 @@ const campaigns = [
         const sectionHref = `${base}/wiki/${encodeURIComponent(section)}`;
         const subLinks = sectionSubSectionSlugs[section] ?? {};
         const visibleSubs = subSections.slice(0, 6);
+        const hiddenSubs = subSections.slice(6);
         return (
           <div class="group bg-chronicle-card border border-chronicle-border rounded-md overflow-hidden hover:border-chronicle-muted/40 transition-colors duration-200">
             <a href={sectionHref} class="block p-5 border-b border-chronicle-border">
@@ -165,12 +132,28 @@ const campaigns = [
                     </a>
                   </li>
                 ))}
-                {subSections.length > 6 && (
-                  <li>
-                    <a href={sectionHref} class="block text-xs text-chronicle-dim hover:text-chronicle-muted px-2 py-1 italic">
-                      + {subSections.length - 6} more...
-                    </a>
-                  </li>
+                {hiddenSubs.length > 0 && (
+                  <>
+                    <li data-expand-target class="hidden">
+                      {hiddenSubs.map(sub => (
+                        <a
+                          href={subLinks[sub] ?? sectionHref}
+                          class="block text-sm text-chronicle-muted hover:text-chronicle-text px-2 py-1 rounded transition-colors truncate"
+                        >
+                          {sub}
+                        </a>
+                      ))}
+                    </li>
+                    <li>
+                      <button
+                        type="button"
+                        data-expand-btn
+                        class="block text-xs text-chronicle-dim hover:text-chronicle-muted px-2 py-1 italic cursor-pointer bg-transparent border-0"
+                      >
+                        + {hiddenSubs.length} more...
+                      </button>
+                    </li>
+                  </>
                 )}
               </ul>
             )}
@@ -178,6 +161,18 @@ const campaigns = [
         );
       })}
     </div>
+
+    <script>
+      document.querySelectorAll('[data-expand-btn]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const list = btn.closest('ul');
+          if (!list) return;
+          const target = list.querySelector('[data-expand-target]');
+          if (target) target.classList.remove('hidden');
+          btn.parentElement?.remove();
+        });
+      });
+    </script>
   </section>
 
   <!-- About -->

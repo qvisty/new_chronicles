@@ -196,11 +196,13 @@ function groupSort(section: string) {
 let groupedFiles: Record<string, Record<string, string[]>> = {};
 if (isSection && sectionFiles) {
   const basePath = parts.join('/') + '/';
+  const isRecapSection = parts[0] === 'Recaps';
   for (const fp of sectionFiles as string[]) {
     const rest = fp.startsWith(basePath) ? fp.slice(basePath.length) : fp.replace(section + '/', '');
     const subParts = rest.split('/');
-    const group = subParts.length > 1 ? subParts[0] : '_root';
-    const subGroup = subParts.length > 2 ? subParts[1] : '_root';
+    // Flatten Recaps sections so all sessions sort numerically together
+    const group = (subParts.length > 1 && !isRecapSection) ? subParts[0] : '_root';
+    const subGroup = (subParts.length > 2 && !isRecapSection) ? subParts[1] : '_root';
     if (!groupedFiles[group]) groupedFiles[group] = {};
     if (!groupedFiles[group][subGroup]) groupedFiles[group][subGroup] = [];
     groupedFiles[group][subGroup].push(fp);

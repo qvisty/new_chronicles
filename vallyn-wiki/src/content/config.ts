@@ -3,17 +3,17 @@ import { defineCollection, z } from 'astro:content';
 const wiki = defineCollection({
   type: 'content',
   schema: z.object({
-    // Valgfri typemarkering (person, sted, organisation, genstand, begivenhed, andet)
+    // Optional type tag (person, place, organization, item, event, other)
     type: z.enum(['person', 'place', 'organization', 'item', 'event', 'other']).optional(),
-    // Fritekst-tags til kategorisering (accepter baade array og kommasepareret streng)
+    // Free-text tags for categorization (accepts both array and comma-separated string)
     tags: z.union([z.array(z.string()), z.string()]).optional(),
-    // Eksplicitte "Se ogsaa"-links: liste af sidenavne (filnavn uden .md)
+    // Explicit "See also" links: list of page names (filename without .md)
     related: z.array(z.string()).optional(),
-    // Udgivelsesdato (YYYY-MM-DD) — bruges til sortering af stories i udgivelsesraekkefoelge
+    // Publication date (YYYY-MM-DD) — used for sorting stories in publication order
     date: z.string().optional(),
-    // Eksplicit sorteringstal — bruges som alternativ til date for stories
+    // Explicit sort order number — used as alternative to date for stories
     order: z.number().optional(),
-    // Tillad alle andre frontmatter-felter fra eksisterende filer
+    // Allow all other frontmatter fields from existing files
   }).passthrough().optional().default({}),
 });
 
