@@ -1,3 +1,6 @@
+---
+order: 6
+---
 With weak knees, Targan climbs down the stairs of his tower. He tucks his fingers into his material pouch, twisting a thin strand of silver between the digits, and thinking. _Sending_ is such a simple spell. For one as deeply versed in the arcane as he is - as _they_ are, it requires only the slightest exertion, but hesitation halts the motions before they can even begin to form.
 
 It has been so long since he has spared a thought on Aleron, and he is not so naive as to believe that a friendship as old as theirs is free of shadows. Especially with the company they used to keep. Perhaps he should not have been stunned into silence when the tiefling girl revealed Aleron’s plans, though surprise had gripped him all the same.

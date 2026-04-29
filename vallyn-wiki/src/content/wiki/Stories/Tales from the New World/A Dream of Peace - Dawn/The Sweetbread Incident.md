@@ -1,3 +1,6 @@
+---
+order: 12
+---
 The skin on my right hand itches under the glove. My left hand flinches towards it before I correct myself into petting Keena, who is purring on my lap. I know tonight, when I have some privacy, I'll need to rub some lotion on it so the rough fabric doesn’t scratch at the scar. I rarely feel it anymore, but on days when the weather is cold, or the air is dry, or the wind is full of salt, I feel it. The dwarven woman across from me is snoring, leaning against a tall, tiefling man. They seem to know each other, and they are both kind. I have heard rumors about both of them before; I assume they have heard rumors about me.
 
 Lord Vaeren Isareth clears his throat before coughing into a handkerchief. He tells us that he has already paid for our accommodations and that, not to worry, he’ll be back in three days. Thinking to myself, I wonder how I got tangled up in working with this nobility when I had promised myself I would level out the playing field of wealth. I suppose we all must do things that contradict our ideals occasionally, especially if the pay is good enough. 

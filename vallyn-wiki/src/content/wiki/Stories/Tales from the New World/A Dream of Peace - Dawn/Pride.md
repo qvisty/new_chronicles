@@ -1,3 +1,6 @@
+---
+order: 14
+---
 Eramok could see the tension in the way Shuddul had clenched his hand into a fist at his side as they walked up to the war room of their home. Their footsteps joined the echoes of wooden swords clashing, overlapping the present with the memories of their shared childhood within the Thaurholt mansion. Hours they spent training together, to become strong enough to carry the family's pride on their shoulders, but for a few years now, Eramok had watched Shuddul bending under that weight. His smile had become heavier, the frown on his face now a constant. 
 
 Eramok felt his own eyebrows knit together as he watched the skin over his cousin’s knuckles pale with the force he was digging his nails into his palm. It wasn’t worry that had him reach out, but an inherent refusal to accept Shuddul’s quiet surrender. He couldn’t understand that kind of obedience.

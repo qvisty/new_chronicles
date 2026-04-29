@@ -1,3 +1,6 @@
+---
+order: 12
+---
 Adren felt vomit crawl up his throat as he stumbled out of the tree he had ripped open with the last bit of magic left after the fight. The swamp welcomed him with wet open arms and a stench he thought he would have already gotten used to by now. His vision blurred, the air stung his nose and lungs, and one of his hands slipped from the tree where he had grabbed for support. The skin on his palm tore on the rough bark and he barely found the strength in his battered body to keep from falling into the stinking water at his feet.
 
 As the black wood stitched itself back together behind him, Adren’s eyes landed on the twisted nest of roots that covered most of his surroundings. Most of them were already rotting, falling apart into colorless lumps of sludge and moss. He had to press his bleeding hand to his mouth to keep the rot from overwhelming him before he continued to stagger his way forward.

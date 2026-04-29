@@ -1,3 +1,6 @@
+---
+order: 17
+---
 Every time Gabe crossed the borders of Enya, he was reminded how differently the other mortal races of this plane perceived time. Yes, the elves were not the only long-lived species among them, but there was a considerable difference still. Humans, for example, lived like sparks. Brief and bright and restless. 
 
 Elves lingered.

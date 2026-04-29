@@ -1,3 +1,6 @@
+---
+order: 5
+---
 It was early in the day, the sun hadn't even started to rise in the horizon, but it didn't matter. The farmer had a job to do, so he went out of his room and into his kitchen where he got himself some stale bread and some milk from a pitcher that he had gathered the day before. After he had finished his food he went out the door of his meager home to head towards his shed. When he got there he gathered his usual tools and put them in his belt. He had grabbed all he needed, then went out and into his barn to feed and care for his cows and sheep.
 
 As his cows fed on the hay he had given them, he left to go get his horse from the other pen outside. Walking up and brushing his horse, he gives it some hay and fastens the plow to the horse preparing it for the hard day of work ahead. Work has been hard on the farmer ever since his family moved to the city to get out of the contested areas. However, he had to stay behind so he could fund their life in the much more populated city. His eldest son should be about finished in the military academy, he thinks, as he nudges his horse forward towards his endless fields of grain.

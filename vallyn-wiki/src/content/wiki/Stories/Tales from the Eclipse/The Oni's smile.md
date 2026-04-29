@@ -1,3 +1,6 @@
+---
+order: 2
+---
 On this night, the moon shone brightly, with no clouds present in the night sky. The light illuminated the room of a human girl, sleeping in a small canopy bed, carved beautifully from dark wood. As was usual for her, a small candle stood lit by her bedside. A gust of wind blew open her window, and blew out the candle. The wind glided over the face of the girl, awakening her. She blinked her eyes a few times, before looking around the room. Well past midnight, and the light from the moon seemed to elongate the shadows into twisted shapes. Fear gripped her young heart. A memory from not long ago tugged at her mind. A nursery rhyme, a grim one her parents had sung to scare her into behaving. Without thinking, she started singing the words under her breath.
 
 _“Lock the door, blow out the light;_ _The hungry oni haunts the night.”_

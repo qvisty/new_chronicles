@@ -1,3 +1,6 @@
+---
+order: 7
+---
 Andor looked around the elevator at his men, and saw mostly scared young men with the rare guard veteran sprinkled in. He gripped the pommel of his sword a bit harder and fell back into thought. The Bravelle family had ordered him to find and capture Saphira Gariel, a known criminal who apparently drew a gun at a noble during the ball incident a few months back. However Andor knew Saphira; he had talked to her several times before and even worked with her brother Cindred countless times. They wouldn't betray Loflein, right? His thoughts were whisked away as the elevator stopped on the second level. His men nervously grabbed their weapons and awaited Andor's orders. Andor puffed his chest and ordered "she was last seen in a warehouse 6 minutes to the west of here. Be on your guard, we have all heard of the missing patrols". Andor's men nodded and started walking in formation as he himself had trained them to do.
 
 As they walked the streets, the people of the underground levels watched them meticulously, as if they were an invading force. There had always been a difference between the people of the upper levels and lower but the animosity between the two had only grown in recent times. Several missing patrols and worker strikes all over could only lead to more dissent among the population but it didn't matter.

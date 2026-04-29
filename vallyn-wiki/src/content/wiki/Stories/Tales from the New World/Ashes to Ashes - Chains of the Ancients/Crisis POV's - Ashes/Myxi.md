@@ -1,3 +1,6 @@
+---
+order: 25
+---
 **Myxi**
 
 In the heart of the marshes, within the confines of Dundrad Manor, Lady Rosara sat in the solitude of her opulent chambers. She held a golden locket, its delicate clasp enclosed the painted visage of a young girl, a reminder of what she had lost..

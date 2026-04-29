@@ -1,3 +1,6 @@
+---
+order: 10
+---
 Lambert raised a hand to his forehead, massaging his temples as he felt the oncoming migraine worsening with every report laying before him. The writing blurred and he tried to blink a few times to clear his eyes from sleep but it was useless. Lambert leant back into his chair, echoing the groan the old wood made under his weight. 
 
 He knew managing a mercenary group was time consuming, costly, and included bureaucracy that would test his patience more often than not. The reports stacked on his table and he lost count of the many coffee stains that tainted the polished mahogany. At first he had used coasters, remembering that Corvan had always hated when people put cups and tankards on his working table without them protecting the wood, but at this point the upkeep of the expensive mahogany was the least of his worries. Corvan would have to forgive him. 

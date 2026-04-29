@@ -1,3 +1,6 @@
+---
+order: 9
+---
 The message came in on paper that smelled of ash. No seal. No signature. Just a single sentence scrawled in Undercommon -
 
 _“Sszar'Morin has fallen.”_

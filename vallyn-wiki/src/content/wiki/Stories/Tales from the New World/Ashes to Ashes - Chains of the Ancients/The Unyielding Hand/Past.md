@@ -1,3 +1,6 @@
+---
+order: 2
+---
 As the Aspect carved his way through the battlefield, the radiant light from his golden armor shone like a beacon in the darkness beneath the ashen sky. Each strike was guided by an unshakeable purpose - the will of the Unyielding Hand. Every swing of his blade was a prayer to the Lord of Duty, whose divine strength fortified his own.
 
 His fight was not for glory, but for the promise of peace. He fought for the innocents of this world, the ones hiding behind the crumbling walls left by this war, the ones whispering prayers to the gods. His duty was to protect the ones ravaged by this war of the higher beings.

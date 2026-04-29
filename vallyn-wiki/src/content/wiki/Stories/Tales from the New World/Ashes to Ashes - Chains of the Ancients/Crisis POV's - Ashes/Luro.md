@@ -1,3 +1,6 @@
+---
+order: 24
+---
 **Luro**
 
 Evander sat in his chair, his gaze sweeping over the untamed wilds stretched out before him. The wilderness, teeming with creatures, was a sight he never tired of. His inherent love for the hunt, a trait that ran deep within his blood, was satiated by these vast hunting grounds right at his doorstep. He savored the last drops of his rich, crimson wine and set the goblet aside. A hunt was due, but other pressing matters demanded his attention.

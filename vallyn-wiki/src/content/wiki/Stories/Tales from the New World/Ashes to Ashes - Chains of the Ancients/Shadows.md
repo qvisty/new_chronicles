@@ -1,3 +1,6 @@
+---
+order: 7
+---
 Fire.
 
 Intense. All-consuming. Swallowing anything and anyone around it in its deadly dance. It fills his vision with shades of red, orange and yellow. A hint of copper.

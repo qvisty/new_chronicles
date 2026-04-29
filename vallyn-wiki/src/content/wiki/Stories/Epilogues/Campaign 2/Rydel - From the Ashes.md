@@ -1,3 +1,6 @@
+---
+order: 32
+---
 From the Ashes
 ==============
 

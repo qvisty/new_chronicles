@@ -1,3 +1,6 @@
+---
+order: 15
+---
 He had told himself it was temporary. Travel with them until it was safe, stay long enough for their scent to mask theirs, lose whatever trail still snapped at their heels, and then leave silently, unnoticed. He hadn’t meant for them to linger. Hadn’t meant for them to grow closer.
 
 “Again,” Nasir said.

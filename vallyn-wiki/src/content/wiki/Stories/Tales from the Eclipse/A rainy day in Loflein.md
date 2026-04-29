@@ -1,3 +1,6 @@
+---
+order: 6
+---
 “He's 'ere Boss! We can't stop 'im, what are we gunna do?” A man, covered in the blood of his allies yelled out, looking towards a figure bathed in unnatural green light and smoke sitting upon a metal throne. The many guards positioned in this hall turn towards the entrance, as they hear sudden screams of their comrades that go quiet just as fast. They stand ready, gripping their various scrapped together weapons tightly. Though their faces are unrecognisable through their helmets, their fear is plain to see with how intensely their bodies are shaking.
 
 The person on the throne rises, then raises a hand and calmly states: “Stand ready, defend me with your life.”

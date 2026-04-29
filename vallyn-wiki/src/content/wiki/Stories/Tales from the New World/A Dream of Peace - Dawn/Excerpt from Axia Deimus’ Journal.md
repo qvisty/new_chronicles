@@ -1,3 +1,6 @@
+---
+order: 8
+---
 Excerpt from Axia Deimus’ Journal
 =================================
 

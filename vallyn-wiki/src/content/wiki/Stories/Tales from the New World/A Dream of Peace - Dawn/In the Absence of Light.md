@@ -1,3 +1,6 @@
+---
+order: 7
+---
 In the Absence of Light
 =======================
 

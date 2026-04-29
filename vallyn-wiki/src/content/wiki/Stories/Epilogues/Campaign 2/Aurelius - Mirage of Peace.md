@@ -1,3 +1,6 @@
+---
+order: 22
+---
 **Aurelius: Mirage of Peace**
 =============================
 

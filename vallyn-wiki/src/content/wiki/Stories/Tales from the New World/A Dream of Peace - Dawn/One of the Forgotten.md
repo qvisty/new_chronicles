@@ -1,3 +1,6 @@
+---
+order: 2
+---
 Epida Amini was never built to fall. She was carved with purpose, crowned with progress, and veined with power drawn from the very fabric of the world. Here, in the marble halls that hummed with runes and whispered incantations, the greatest minds of a hundred ages debated laws of time, split magic like stained glass to make their own artistic renditions, teased impossibilities from the marrow of stars, not for conquest - for curiosity. 
 
 Her libraries sang with the voices of every soul that had dared to think beyond the bounds of mortal restraint, her halls taught to question the shape of truth for each child whose footsteps echoed theories yet unwritten. She was a cathedral to the mind, consecrated not in faith but in inquiry.

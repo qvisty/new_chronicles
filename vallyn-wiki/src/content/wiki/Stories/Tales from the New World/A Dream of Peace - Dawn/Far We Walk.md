@@ -1,3 +1,6 @@
+---
+order: 13
+---
 The rain is nearly deafening, hammering the road and trees in a steady rhythm. The sky is dark enough to pass for night, though it should be midday by now. Cassandra walks with her head held high and her back straight, the way she always does, even now, soaked through, aching, and long past tired. The road stretches ahead, always just as empty as it is behind her, with no sign of shelter, no sound beyond rain and the steady squelch of her boots. Now and then, she pauses, just for a moment, to scan the mist ahead. Maybe she hopes to catch the shape of a building or a torchlight through the downpour. But there’s never anything there. Just trees leaning close to the road and the thick grey curtain of weather. Stopping solves nothing. So she keeps moving. Forward is all that matters. To steady herself, she hums a simple tune and song, soft and steady. The sound carries just far enough for me to hear it under the rain. Her voice is calm, and somehow it makes the road feel a little less empty.
 
 _Step by step, the road runs wide,_  

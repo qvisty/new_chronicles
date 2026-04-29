@@ -1,3 +1,6 @@
+---
+order: 26
+---
 Our shield, Our Hammer, Our Hope
 ================================
 

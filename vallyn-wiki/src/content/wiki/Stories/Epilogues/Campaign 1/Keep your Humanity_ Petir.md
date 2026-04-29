@@ -1,3 +1,6 @@
+---
+order: 2
+---
 A ruined Castle in the eye of a storm, dark clouds swirling above while sickening green bolts of lightning strike anything which dares reach for the heavens. The landscape is rotten and desolate, anything which once had any life flowing through it has long since forgotten the meaning of it. Despite it all, there is one man fighting against the curse that befell this land.
 
 Petir is moving towards the keep, wiping away the blood of lesser undead from his weapons. He moves past a black Iron gate, further into the territory of the Castle’s Lord. His ear perks up, he readies his weapons. All around him, undead rise from the ground once again, and yet none of them seem to attack him. They observe him, studying his every detail, until one of them breaks the silence between them.

@@ -1,3 +1,6 @@
+---
+order: 19
+---
 Hers was not a story of love. 
 
 It could have been. Some years ago, when the pure marble walls of her home were not yet stained with the echoes of her muffled cries, when the clear glass of the windows were not yet dulled by dust and scratches left behind from the storm that tore her family apart.

@@ -1,3 +1,6 @@
+---
+order: 14
+---
 **Whispers of The Lost**
 
 Night had fallen, draping the world in muted shadows. Aelthar had marked the ground where he stood with his ritual circle and started channeling his power into it. He hadn't known what caused him to do this, but he had felt a call and his instincts told him to follow it.

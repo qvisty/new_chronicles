@@ -1,3 +1,6 @@
+---
+order: 4
+---
 Freedom, At Last
 ================
 

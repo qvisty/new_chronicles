@@ -1,3 +1,6 @@
+---
+order: 3
+---
 The Restoration of the Ridian Empire
 ====================================
 

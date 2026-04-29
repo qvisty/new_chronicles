@@ -1,3 +1,6 @@
+---
+order: 1
+---
 Epida Amini, the magical capital of the world, once stood as a beacon of arcane enlightenment. Its cobbled streets shimmered with residual magic, and luminous crystals bathed the city in a soft, ever-present glow. Floating platforms carried scholars between towering spires, and bridges woven from enchanted vines stretched across canals teeming with aquatic familiars. The Arcane Nexus, an imposing tower at the city's heart, housed the ruling council - wizards, sorcerers, and scholars who safeguarded the responsible use of magic.
 
 For centuries, its walls had held firm against all threats.

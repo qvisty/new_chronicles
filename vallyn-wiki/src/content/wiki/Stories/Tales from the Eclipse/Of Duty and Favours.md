@@ -1,3 +1,6 @@
+---
+order: 8
+---
 The streets of Onketh were burning. All hell broke loose the second the first explosion echoed through the city. As chaos erupted, people started flooding the streets. Yucca took a deep breath, inhaling the scent of the smoke surrounding them. Myyystic at her side, her own heart beating faster in her chest and her sword heavy in her hand, ready and set to go. She could feel her senses sharpen as the adrenaline rushed through her veins and she flexed her fingers around the handle of her sword. A gust of wind pulled at her hair as she rose the blade to face their friend.
 
 Emile was standing only a few feet ahead. His back turned to the group who had taken the girl Grace to wherever they thought was safe. They would not be able to hide from Garcius, though. She would find them eventually. She has to.

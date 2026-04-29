@@ -1,3 +1,6 @@
+---
+order: 20
+---
 **Malevor**
 
 Alune walked up the steps leading to the entrance of the Silver Sanctum. it was eerily quiet and she could not see a single soul. Her body still ached from her fight but she forced her way home. As she reached the top of the steps, she noticed the open doors of the Sanctum. One of the statues of the Moonmaiden, usually standing tall and welcoming, was destroyed from the waist up. 

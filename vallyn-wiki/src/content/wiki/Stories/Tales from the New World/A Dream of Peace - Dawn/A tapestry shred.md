@@ -1,3 +1,6 @@
+---
+order: 1
+---
 Stone is shelter
 
 Frost preserves.

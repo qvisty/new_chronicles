@@ -1,3 +1,6 @@
+---
+order: 18
+---
 The air above the Dragon Elf Isles was thick with the stench of decay and the odor of Abyssal corruption. Blackened clouds stretched overhead. What was once a vibrant, sacred land was now little more than a ruin. Nethrak, the Hand of the Abyss, stood looking over the desecrated landscape, his eyes fixed on the raw power coursing through the ground beneath him.
 
 The leyline’s energies had been claimed, but not yet mastered. The architects - shifting monstrosities born of the Abyss - scurried across the site, beginning their work. Where their tendrils touched stone, it twisted and screamed, warping into the foundation of what would soon become the first of three great obelisks.

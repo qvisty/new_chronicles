@@ -1,3 +1,6 @@
+---
+order: 22
+---
 **Alistair**
 
 Jachin stood on the podium, a sea of applause washing over him. Thousands of beings, each a unique voice in the symphony of approval that never lost its thrill. It was an intoxicating mix of adulation and power, and it was all for him. He bowed deeply, acknowledging the crowd, then stepped off the podium, descending into the labyrinthine underbelly of the court.

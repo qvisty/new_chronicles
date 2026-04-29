@@ -1,3 +1,6 @@
+---
+order: 21
+---
 **Sanctuary**
 
 Briar shifted uncomfortably on the hard wooden bench outside the office. The ticking clock on the wall echoed in the silent hallway, each second stretching into an eternity. Seven hours he'd been sitting there, a test of patience, or perhaps a psychological game. His arms and legs were crossed tightly, a clear sign of his growing frustration.

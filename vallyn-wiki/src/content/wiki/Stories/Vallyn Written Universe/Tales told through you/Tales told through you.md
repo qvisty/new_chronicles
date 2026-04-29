@@ -1,3 +1,6 @@
+---
+order: 3
+---
 After a near-death experience and a turbulent attempt at resurrection, Yorovar now walks a fine line between the land of the living and the realm of the dead. Now, in moments of need, Yorovar can instinctually summon spiritual embodiments of powerful forces, bestowing upon him stories, tales of great heroes, treacherous fiends, horrible villains, and all in between. And with these stories comes inherent power.
 
 Yorovar now seeks to travel the world, to change the world once more. And he wishes for his travels to become stories. Myths. Legends.

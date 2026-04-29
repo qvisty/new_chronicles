@@ -1,3 +1,6 @@
+---
+order: 4
+---
 Sounds of music fills the street outside of the Blackpeak Manor. The annual ball is well underway, and chatter and laughter of Egophis’ richest inhabitants can be heard from well around.
 
 The lights shining from inside the manor contrast the many dark corners of the city, like the one Yorovar finds himself in - it is on nights like these that the citizens of the lower city get reminded that they still live in the shadows of the upper city’s inhabitants. And it is on nights like these that some might wish to create a little chaos.

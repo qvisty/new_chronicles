@@ -1,3 +1,6 @@
+---
+order: 1
+---
 ✦ The Spellplague  
 (As recorded by Toad, former Keeper of the Weave, Year Five of the Spellplague)
 ===================================================================================================

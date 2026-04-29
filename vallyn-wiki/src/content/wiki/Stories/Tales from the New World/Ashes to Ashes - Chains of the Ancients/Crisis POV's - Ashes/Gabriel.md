@@ -1,3 +1,6 @@
+---
+order: 19
+---
 **Gabriel**
 
 Kharis walked down the empty paths of the garden as bells tolled throughout the city. Further ahead of him in the center of the garden he saw the ancestral tree that signified the founding of Inensari and the Naarthil family. It was then that he was reminded of the weight in his hands as he walked, the sound of bells faded and he was left with his solemn footsteps striking the leaves on the path. 

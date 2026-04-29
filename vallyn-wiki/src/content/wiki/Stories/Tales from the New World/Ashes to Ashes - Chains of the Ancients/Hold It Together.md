@@ -1,3 +1,6 @@
+---
+order: 13
+---
 Toad awoke with a gasp, her heart pounding away inside her chest. She clutched the amulet hanging around her neck, the one bestowed to her by Mystra, feeling its cool surface against her skin. It was with short, ragged breaths that she tried for the moment to recall where she was. The dream - no, the vision - still lingered in her mind.
 
 She scanned the interior of the dome of force she had surrounded herself with the previous night before going to sleep. Outside it, her campfire had long since died, and the morning sun was rising over the horizon, covering the mountainside below her in a golden light. Outside, the world was calm, unaware of the storm within the mind of the diviner.

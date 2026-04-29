@@ -1,3 +1,6 @@
+---
+order: 34
+---
 Soren couldn't see a thing as the dust had been kicked up and obscured his view of the battlefield. He waved his hands in front of him and kept moving blindly towards where he last saw his friends fighting Elenor. He had seen Dave and Emile run to give them support mere moments before he had freed himself from the fighting.
 
 Soren kept going and suddenly with a large gust of wind, the dust around him was cleared and he could see Esta and Fenlar fighting one of the Acolytes. The Acolyte was a slender man wielding a giant scythe and wielded it with such proficiency it looked like a blur even to him. Esta’s armor was cleaved in several spots and blood was pouring from the wounds underneath, Fenlar was not doing any better as his wings were tattered by slashes and one of his legs was hanging limply half torn off. As the Acolyte got pushed back by a strike from Fenlar, Soren made his move. He lunged forwards piercing the man from lower back to gut with his spear. The Acolyte made no noise, only twisted his entire body around and swiped his scythe at blinding speeds at Soren. He only barely got his shield up in time and got sent several feet backwards almost falling down into the rifts in the ground after the earthquake earlier.

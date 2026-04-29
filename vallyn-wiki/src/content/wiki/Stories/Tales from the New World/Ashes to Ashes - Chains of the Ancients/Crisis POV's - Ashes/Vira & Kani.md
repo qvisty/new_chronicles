@@ -1,3 +1,6 @@
+---
+order: 27
+---
 **Vira & Kani**
 
 Aleron had been sitting in front of his mirror for the past few hours looking over the events of the past few days on the material plane while absent mindedly following along the events of the fight in Cretara which was about to come to a close. The portal was moments from closing as Vira walked up and started channeling soul magic to keep it open. Aleron found it slightly amusing if anything. Moments later as Vira became the victim of Demogorgon’s Ire the last 2 exited the portal just as their airship arrived. 

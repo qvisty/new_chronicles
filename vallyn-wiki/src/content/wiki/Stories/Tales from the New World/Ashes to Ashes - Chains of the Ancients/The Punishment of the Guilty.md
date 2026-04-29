@@ -1,3 +1,6 @@
+---
+order: 9
+---
 Lobu Makane sat in his tent, surrounded by the silent camp. His men had settled into an exhausted but restless sleep after their hours-long march through the Northern Alliance.   
 
 With every mile they travelled, the air became sharper. Its cold, usually welcomed, just filled Lobu with dread the closer they got to their borders. 

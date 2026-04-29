@@ -1,3 +1,6 @@
+---
+order: 6
+---
 yorovar for some reason has to do a riddle
 
 he hears the riddle and is like oh shit idk

@@ -1,3 +1,6 @@
+---
+order: 24
+---
 The Weight of Steel
 ===================
 

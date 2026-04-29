@@ -1,3 +1,6 @@
+---
+order: 3
+---
 The underground auction house of Myria smelled of damp stone and greed. Candles flickered against the vaulted ceiling, casting long shadows over a crowd of masked buyers seated in a semi-circle around the central stage. Here, beneath the gilded streets of the city, artifacts of power exchanged hands in whispers and fortunes.
 
 Lady Selene Vael sat near the center, clad in elegant midnight-blue silk, her face obscured by a silver half-mask. She sipped wine from a crystal goblet, watching the auctioneer with mild disinterest - until they unveiled the soul stone.

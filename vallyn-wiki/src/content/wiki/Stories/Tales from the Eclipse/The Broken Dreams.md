@@ -1,3 +1,6 @@
+---
+order: 3
+---
 I wake up to the gentle rays of sunlight shining down on me. My wife is lying beside me in a most comfortable bed. Though my vision is blurry, I know she is smiling at me.
 
 I don’t remember what happened, but I suddenly found myself outside, looking out into a town I helped rebuild. I hear the laughter of children, as they run through the streets ignorant of what’s to come. The moment is a happy one, and yet, every time I see this memory in my dreams, it only brings me pain.

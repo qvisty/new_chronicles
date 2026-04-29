@@ -1,3 +1,6 @@
+---
+order: 5
+---
 Blood drips from Yorovar’s, probably broken, nose. He scrambles backwards, struggling to stay on his feet. Another hit, straight into his ribs. A crack is felt, both by Yorovar, and his opponent facing him.
 
 Yorovar scutters backwards hurriedly, while hovering his hand over where he had just been punched. A soothing warmth extends from his palm, and he feels his innards fix themselves. Uncomfortable, but surely better than the alternative.
